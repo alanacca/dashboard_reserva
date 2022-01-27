@@ -7,19 +7,21 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@Table(schema = "public", name="Pessoas")
+@Table(schema = "teste", name="pessoas")
+@SequenceGenerator(name = "teste.pessoas_id_pessoa_seq", sequenceName = "teste.pessoas_id_pessoa_seq", allocationSize = 1)
 public class Pessoas {
     @Id
-    @Column(name="Id_pessoa")
+    @Column(name="id_pessoa")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "teste.pessoas_id_pessoa_seq")
     private Integer idPessoa;
 
-    @Column(name="Nome_Completo")
+    @Column(name="nome_completo")
     private String Nome_Completo;
 
-    @Column(name="Id_Plataforma")
+    @Column(name="id_plataforma")
     private String idPlataforma;
 
-    @Column(name="Plataforma")
+    @Column(name="plataforma")
     private String Platraforma;
 
     public Pessoas(){

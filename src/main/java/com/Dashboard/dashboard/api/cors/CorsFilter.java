@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static org.hibernate.cache.spi.support.SimpleTimestamper.next;
+
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class CorsFilter implements Filter {
@@ -34,5 +36,6 @@ public class CorsFilter implements Filter {
         } else {
             chain.doFilter(req, res);
         }
+
     }
 }
