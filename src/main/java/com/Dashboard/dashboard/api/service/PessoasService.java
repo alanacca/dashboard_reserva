@@ -25,5 +25,7 @@ public class PessoasService {
         return this.pessoasRepository.findAll();
     }
 
+    public Pessoas findByNome(String nome){return this.pessoasRepository.getByNomeCompleto(nome);}
+
 
 }

@@ -16,7 +16,7 @@ public class Pessoas {
     private Integer idPessoa;
 
     @Column(name="nome_completo")
-    private String Nome_Completo;
+    private String nomeCompleto;
 
     @Column(name="id_plataforma")
     private String idPlataforma;
@@ -33,7 +33,7 @@ public class Pessoas {
     }
 
     public Pessoas(PessoasRequest request){
-        this.Nome_Completo = request.Nome_Completo;
+        this.nomeCompleto = request.Nome_Completo;
         this.idPlataforma = request.idPlataforma;
         this.Platraforma = request.Plataforma;
     }
