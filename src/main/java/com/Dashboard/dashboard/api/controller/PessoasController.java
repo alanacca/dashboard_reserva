@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/pessoas")
@@ -23,8 +24,8 @@ public class PessoasController {
     private ApplicationEventPublisher publisher;
 
     @GetMapping("/listar")
-    public String listar(){
-        return "Testando confirmaas";
+    public List<Pessoas> listar(){
+        return pessoasService.findAll();
     }
 
     @PostMapping

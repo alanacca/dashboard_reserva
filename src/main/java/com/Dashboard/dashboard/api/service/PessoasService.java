@@ -7,6 +7,8 @@ import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PessoasService {
 
@@ -18,4 +20,12 @@ public class PessoasService {
         Pessoas pessoa = new Pessoas(pessoasRequest);
         return this.pessoasRepository.save(pessoa);
     }
+
+    public List<Pessoas> findAll(){
+        return this.pessoasRepository.findAll();
+    }
+
+    public Pessoas findByNome(String nome){return this.pessoasRepository.getByNomeCompleto(nome);}
+
+
 }

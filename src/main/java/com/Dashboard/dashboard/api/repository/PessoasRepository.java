@@ -4,4 +4,7 @@ import com.Dashboard.dashboard.api.model.Pessoas;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PessoasRepository extends JpaRepository<Pessoas, Integer> {
+
+    Pessoas getByNomeCompleto(String nome);
 }
+
