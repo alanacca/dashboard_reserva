@@ -258,14 +258,14 @@ public class extratorLSG extends DefaultHandler {
 
             if (lastArtigo!=null) {
                 //if (lastArtigo == null) lastArtigo = new Artigo();
-                lastArtigo.AUTORES += atts.getValue("NOME-COMPLETO-DO-AUTOR") + ";";
+                lastArtigo.setAUTORES(lastArtigo.getAUTORES()+atts.getValue("NOME-COMPLETO-DO-AUTOR") + ";");
             }
             if (lastCapitulo!=null) {
                 //if (lastCapitulo == null) lastCapitulo = new CapituloLivro();
-                lastCapitulo.AUTORES += atts.getValue("NOME-COMPLETO-DO-AUTOR") + ";";
+                lastCapitulo.setAUTORES(lastCapitulo.getAUTORES()+atts.getValue("NOME-COMPLETO-DO-AUTOR") + ";");
             }
             if (lastTecnica != null) {
-                lastTecnica.autores += atts.getValue("NOME-COMPLETO-DO-AUTOR") + ";";
+                lastTecnica.setAutores(lastTecnica.getAutores()+atts.getValue("NOME-COMPLETO-DO-AUTOR") + ";");
             }
 
         }
@@ -274,37 +274,37 @@ public class extratorLSG extends DefaultHandler {
             if (lastProjeto == null)
                 lastProjeto = new Projeto();
 
-            lastProjeto.SEQUENCIA_PROJETO=atts.getValue("SEQUENCIA-PROJETO");
-            lastProjeto.ANO_INICIO=atts.getValue("ANO-INICIO");
-            lastProjeto.ANO_FIM=atts.getValue("ANO-FIM");
-            lastProjeto.NOME_DO_PROJETO=atts.getValue("NOME-DO-PROJETO");
-            lastProjeto.SITUACAO=atts.getValue("SITUACAO");
-            lastProjeto.NATUREZA=atts.getValue("NATUREZA");
-            lastProjeto.NUMERO_GRADUACAO=atts.getValue("NUMERO-GRADUACAO");
-            lastProjeto.NUMERO_ESPECIALIZACAO=atts.getValue("NUMERO-ESPECIALIZACAO");
-            lastProjeto.NUMERO_MESTRADO_ACADEMICO=atts.getValue("NUMERO-MESTRADO-ACADEMICO");
-            lastProjeto.NUMERO_MESTRADO_PROF=atts.getValue("NUMERO-MESTRADO-PROF");
-            lastProjeto.NUMERO_DOUTORADO=atts.getValue("NUMERO-DOUTORADO");
-            lastProjeto.DESCRICAO_DO_PROJETO=atts.getValue("DESCRICAO-DO-PROJETO");
+            lastProjeto.setSEQUENCIA_PROJETO(atts.getValue("SEQUENCIA-PROJETO"));
+            lastProjeto.setANO_INICIO(atts.getValue("ANO-INICIO"));
+            lastProjeto.setANO_FIM(atts.getValue("ANO-FIM"));
+            lastProjeto.setNOME_DO_PROJETO(atts.getValue("NOME-DO-PROJETO"));
+            lastProjeto.setSITUACAO(atts.getValue("SITUACAO"));
+            lastProjeto.setNATUREZA(atts.getValue("NATUREZA"));
+            lastProjeto.setNUMERO_GRADUACAO(atts.getValue("NUMERO-GRADUACAO"));
+            lastProjeto.setNUMERO_ESPECIALIZACAO(atts.getValue("NUMERO-ESPECIALIZACAO"));
+            lastProjeto.setNUMERO_MESTRADO_ACADEMICO(atts.getValue("NUMERO-MESTRADO-ACADEMICO"));
+            lastProjeto.setNUMERO_MESTRADO_PROF(atts.getValue("NUMERO-MESTRADO-PROF"));
+            lastProjeto.setNUMERO_DOUTORADO(atts.getValue("NUMERO-DOUTORADO"));
+            lastProjeto.setDESCRICAO_DO_PROJETO(atts.getValue("DESCRICAO-DO-PROJETO"));
 
         }
         if (qName.compareTo("INTEGRANTES-DO-PROJETO") == 0) {
             if (lastProjeto == null)
                 lastProjeto = new Projeto();
 
-            lastProjeto.integrantes += atts.getValue("NOME-COMPLETO") + ";  ";
+            lastProjeto.setIntegrantes(lastProjeto.getIntegrantes()+atts.getValue("NOME-COMPLETO") + ";  ");
             String resp = atts.getValue("FLAG-RESPONSAVEL");
-            if ((resp.compareTo("SIM")==0) && (cur.NOME_COMPLETO.compareTo(atts.getValue("NOME-COMPLETO")) ==0))
-                lastProjeto.isReponsavel = true;
+            if ((resp.compareTo("SIM")==0) && (cur.getNOME_COMPLETO().compareTo(atts.getValue("NOME-COMPLETO")) ==0))
+                lastProjeto.setIsReponsavel(true);
         }
         if (qName.compareTo("FINANCIADOR-DO-PROJETO") == 0) {
             if (lastProjeto == null)
                 lastProjeto = new Projeto();
             Financiador f = new Financiador();
-            f.SEQUENCIA_FINANCIADOR = atts.getValue("SEQUENCIA-FINANCIADOR");
-            f.NOME_INSTITUICAO = atts.getValue("NOME-INSTITUICAO");
-            f.NATUREZA = atts.getValue("NATUREZA");
-            lastProjeto.finaciamento.add(f);
+            f.setSEQUENCIA_FINANCIADOR(atts.getValue("SEQUENCIA-FINANCIADOR"));
+            f.setNOME_INSTITUICAO(atts.getValue("NOME-INSTITUICAO"));
+            f.setNATUREZA(atts.getValue("NATUREZA"));
+            lastProjeto.getFinaciamento().add(f);
         }
 
         if (qName.compareTo("ORIENTACOES-CONCLUIDAS-PARA-MESTRADO") == 0 ||
@@ -314,9 +314,9 @@ public class extratorLSG extends DefaultHandler {
                 qName.compareTo("ORIENTACAO-EM-ANDAMENTO-DE-DOUTORADO")==0)  {
             if (lastOrientacao == null)
                 lastOrientacao = new Orientacao();
-            lastOrientacao.sequencia_orientacao = atts.getValue("SEQUENCIA-PRODUCAO");
+            lastOrientacao.setSequencia_orientacao(atts.getValue("SEQUENCIA-PRODUCAO"));
             if (qName.contains("CONCLUIDAS"))
-                lastOrientacao.is_finalizado = true;
+                lastOrientacao.setIs_finalizado(true);
         }
         if (qName.compareTo("DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-MESTRADO")==0 ||
                 qName.compareTo("DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO")==0 ||
@@ -325,12 +325,12 @@ public class extratorLSG extends DefaultHandler {
                 qName.compareTo("DADOS-BASICOS-DA-ORIENTACAO-EM-ANDAMENTO-DE-DOUTORADO")==0) {
             if (lastOrientacao == null)
                 lastOrientacao = new Orientacao();
-            lastOrientacao.natureza = atts.getValue("NATUREZA");
-            lastOrientacao.tipo = atts.getValue("TIPO");
+            lastOrientacao.setNatureza(atts.getValue("NATUREZA"));
+            lastOrientacao.setTipo(atts.getValue("TIPO"));
 
-            lastOrientacao.titulo = atts.getValue("TITULO");
-            lastOrientacao.ano = atts.getValue("ANO");
-            lastOrientacao.doi = atts.getValue("DOI");
+            lastOrientacao.setTitulo(atts.getValue("TITULO"));
+            lastOrientacao.setAno(atts.getValue("ANO"));
+            lastOrientacao.setDoi(atts.getValue("DOI"));
         }
         if (qName.compareTo("DETALHAMENTO-DE-ORIENTACOES-CONCLUIDAS-PARA-MESTRADO") ==0 ||
                 qName.compareTo("DETALHAMENTO-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO")==0 ||
@@ -339,62 +339,62 @@ public class extratorLSG extends DefaultHandler {
                 qName.compareTo("DETALHAMENTO-DA-ORIENTACAO-EM-ANDAMENTO-DE-DOUTORADO")==0) {
             if (lastOrientacao == null)
                 lastOrientacao = new Orientacao();
-            lastOrientacao.tipo_orientacao = atts.getValue("TIPO-DE-ORIENTACAO");
-            lastOrientacao.nome_orientando = atts.getValue("NOME-DO-ORIENTADO");
-            lastOrientacao.nome_instituicao = atts.getValue("NOME-DA-INSTITUICAO");
-            lastOrientacao.nome_orgao = atts.getValue("NOME-ORGAO");
-            lastOrientacao.nome_curso = atts.getValue("NOME-DO-CURSO");
+            lastOrientacao.setTipo_orientacao(atts.getValue("TIPO-DE-ORIENTACAO"));
+            lastOrientacao.setNome_orientando(atts.getValue("NOME-DO-ORIENTADO"));
+            lastOrientacao.setNome_instituicao(atts.getValue("NOME-DA-INSTITUICAO"));
+            lastOrientacao.setNome_orgao(atts.getValue("NOME-ORGAO"));
+            lastOrientacao.setNome_curso(atts.getValue("NOME-DO-CURSO"));
         }
 
         if (qName.compareTo("SOFTWARE")==0) {
             if (lastTecnica == null)
                 lastTecnica = new Tecnica();
-            lastTecnica.tipo = qName;
-            lastTecnica.sequencia_producao = atts.getValue("SEQUENCIA-PRODUCAO");
+            lastTecnica.setTipo(qName);
+            lastTecnica.setSequencia_producao(atts.getValue("SEQUENCIA-PRODUCAO"));
         }
         if (qName.compareTo("DADOS-BASICOS-DO-SOFTWARE")==0) {
             if (lastTecnica == null)
                 lastTecnica = new Tecnica();
-            lastTecnica.titulo = atts.getValue("TITULO-DO-SOFTWARE");
-            lastTecnica.ano = atts.getValue("ANO");
+            lastTecnica.setTitulo(atts.getValue("TITULO-DO-SOFTWARE"));
+            lastTecnica.setAno(atts.getValue("ANO"));
         }
         if (qName.compareTo("DETALHAMENTO-DO-SOFTWARE")==0) {
             if (lastTecnica == null)
                 lastTecnica = new Tecnica();
-            lastTecnica.outras_informacoes += "Finalidade: " + atts.getValue("FINALIDADE") + "; ";
-            lastTecnica.outras_informacoes += "Plataforma: " + atts.getValue("PLATAFORMA") + "; ";
-            lastTecnica.outras_informacoes += "Ambiente: " + atts.getValue("AMBIENTE") + "; ";
-            lastTecnica.financiadora += atts.getValue("INSTITUICAO-FINANCIADORA");
+            lastTecnica.setOutras_informacoes(lastTecnica.getOutras_informacoes()+"Finalidade: " + atts.getValue("FINALIDADE") + "; ");
+            lastTecnica.setOutras_informacoes(lastTecnica.getOutras_informacoes()+"Plataforma: " + atts.getValue("PLATAFORMA") + "; ");
+            lastTecnica.setOutras_informacoes(lastTecnica.getOutras_informacoes()+"Ambiente: " + atts.getValue("AMBIENTE") + "; ");
+            lastTecnica.setFinanciadora(lastTecnica.getFinanciadora()+atts.getValue("INSTITUICAO-FINANCIADORA"));
         }
 
         if (qName.compareTo("PATENTE")==0) {
             if (lastTecnica == null)
                 lastTecnica = new Tecnica();
-            lastTecnica.tipo = qName;
-            lastTecnica.sequencia_producao = atts.getValue("SEQUENCIA-PRODUCAO");
+            lastTecnica.setTipo(qName);
+            lastTecnica.setSequencia_producao(atts.getValue("SEQUENCIA-PRODUCAO"));
         }
         if (qName.compareTo("DADOS-BASICOS-DA-PATENTE")==0) {
             if (lastTecnica == null)
                 lastTecnica = new Tecnica();
-            lastTecnica.titulo = atts.getValue("TITULO");
-            lastTecnica.ano = atts.getValue("ANO-DESENVOLVIMENTO");
+            lastTecnica.setTitulo(atts.getValue("TITULO"));
+            lastTecnica.setAno(atts.getValue("ANO-DESENVOLVIMENTO"));
         }
         if (qName.compareTo("DETALHAMENTO-DA-PATENTE")==0) {
             if (lastTecnica == null)
                 lastTecnica = new Tecnica();
-            lastTecnica.outras_informacoes += "Finalidade: " + atts.getValue("FINALIDADE") + "; ";
-            lastTecnica.financiadora += atts.getValue("INSTITUICAO-FINANCIADORA");
+            lastTecnica.setOutras_informacoes(lastTecnica.getOutras_informacoes()+"Finalidade: " + atts.getValue("FINALIDADE") + "; ");
+            lastTecnica.setFinanciadora(lastTecnica.getFinanciadora()+atts.getValue("INSTITUICAO-FINANCIADORA"));
         }
         if (qName.compareTo("REGISTRO-OU-PATENTE")==0) {
             if (lastTecnica == null)
                 lastTecnica = new Tecnica();
 
-            lastTecnica.outras_informacoes += "Tipo Registro/Patente: " + atts.getValue("TIPO-PATENTE") + "; ";
-            lastTecnica.outras_informacoes += "CÃ³digo: " + atts.getValue("CODIGO-DO-REGISTRO-OU-PATENTE") + "; ";
-            lastTecnica.outras_informacoes += "Data DepÃ³sito: " + atts.getValue("DATA-PEDIDO-DE-DEPOSITO") + "; ";
-            lastTecnica.outras_informacoes += "InstituiÃ§Ã£o: " + atts.getValue("INSTITUICAO-DEPOSITO-REGISTRO") + "; ";
-            lastTecnica.outras_informacoes += "Depositante: " + atts.getValue("NOME-DO-DEPOSITANTE") + "; ";
-            lastTecnica.outras_informacoes += "Titular: " + atts.getValue("NOME-DO-TITULAR") + "; ";
+            lastTecnica.setOutras_informacoes(lastTecnica.getOutras_informacoes()+"Tipo Registro/Patente: " + atts.getValue("TIPO-PATENTE") + "; ");
+            lastTecnica.setOutras_informacoes(lastTecnica.getOutras_informacoes()+"CÃ³digo: " + atts.getValue("CODIGO-DO-REGISTRO-OU-PATENTE") + "; ");
+            lastTecnica.setOutras_informacoes(lastTecnica.getOutras_informacoes()+"Data DepÃ³sito: " + atts.getValue("DATA-PEDIDO-DE-DEPOSITO") + "; ");
+            lastTecnica.setOutras_informacoes(lastTecnica.getOutras_informacoes()+"InstituiÃ§Ã£o: " + atts.getValue("INSTITUICAO-DEPOSITO-REGISTRO") + "; ");
+            lastTecnica.setOutras_informacoes(lastTecnica.getOutras_informacoes()+"Depositante: " + atts.getValue("NOME-DO-DEPOSITANTE") + "; ");
+            lastTecnica.setOutras_informacoes(lastTecnica.getOutras_informacoes()+"Titular: " + atts.getValue("NOME-DO-TITULAR") + "; ");
         }
     }
 }

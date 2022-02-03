@@ -19,13 +19,13 @@ public class Tecnica {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "teste.producoes_tecnicas_id_seq")
     private Integer idTecnica;
 
-    public String sequencia_producao;
-    public String tipo;
-    public String ano;
-    public String titulo;
-    public String financiadora="";
-    public String outras_informacoes="";
-    public String autores = "";
+    private String sequencia_producao;
+    private String tipo;
+    private String ano;
+    private String titulo;
+    private String financiadora="";
+    private String outras_informacoes="";
+    private String autores = "";
 
     public void persist(Connection connection, Curriculo cur) throws SQLException {
         String sql = "select id from producoes_tecnicas where lower(titulo) = lower('" + Utils.strFormat(titulo) + "')";
