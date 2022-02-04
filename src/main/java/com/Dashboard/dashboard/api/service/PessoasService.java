@@ -1,13 +1,20 @@
 package com.Dashboard.dashboard.api.service;
 
-import com.Dashboard.dashboard.api.model.Pessoas;
+import com.Dashboard.dashboard.api.model.*;
 import com.Dashboard.dashboard.api.repository.PessoasRepository;
 import com.Dashboard.dashboard.api.request.PessoasRequest;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.SQLException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
+import java.util.Properties;
 
 @Service
 public class PessoasService {
@@ -25,7 +32,7 @@ public class PessoasService {
         return this.pessoasRepository.findAll();
     }
 
-    public Pessoas findByNome(String nome){return this.pessoasRepository.getByNomeCompleto(nome);}
+    public Optional<Pessoas> findByNome(Integer id){return this.pessoasRepository.findById(id);}
 
 
 }
