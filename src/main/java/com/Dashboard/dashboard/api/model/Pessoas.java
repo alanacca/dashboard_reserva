@@ -1,6 +1,7 @@
 package com.Dashboard.dashboard.api.model;
 
 import com.Dashboard.dashboard.api.request.PessoasRequest;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.persistence.*;
