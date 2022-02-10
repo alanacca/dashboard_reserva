@@ -19,33 +19,46 @@ public class Artigo {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "teste.periodicos_seq")
     private Integer idArtigo;
 
+    @Column(name="sequencia_producao")
     private String SEQUENCIA_PRODUCAO;
 
-
+    @Column(name="titulo")
     private String TITULO_DO_ARTIGO;  //dados bÃ¡sicos
 
+    @Column(name="ano_trabalho")
     private String ANO_DO_ARTIGO;     //dados bÃ¡sicos
 
+    @Column(name="titulo_periodico")
     private String TITULO_DO_PERIODICO_OU_REVISTA; //detalhamento
 
+    @Column(name="issn")
     private String ISSN; //detalhamento
 
+    @Column(name="volume")
     private String VOLUME;
 
+    @Column(name="fasciculo")
     private String FASCICULO;
 
+    @Column(name="serie")
     private String SERIE;
 
+    @Column(name="pagina_inicio")
     private String PAGINA_INICIAL;
 
+    @Column(name="pagina_fim")
     private String PAGINA_FINAL;
 
+    @Column(name="autores")
     private String AUTORES = "";
 
+    @Column(name="doi")
     private String DOI;
 
+    @Column(name="natureza")
     private String NATUREZA;
 
+    @Column(name="tipo_producao")
     private String TIPO;
 
     public String toString() {
