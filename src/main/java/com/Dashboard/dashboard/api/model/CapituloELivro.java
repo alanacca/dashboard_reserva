@@ -38,13 +38,13 @@ public class CapituloELivro {
     private String AUTORES = "";
 
     public void persist(Connection connection, Curriculo cur) throws SQLException {
-        String sql = "select id from capitulos where lower(titulo) = lower('" + Utils.strFormat(TITULO_DO_CAPITULO_DO_LIVRO) + "')";
+        String sql = "select id from teste.capitulos where lower(titulo) = lower('" + Utils.strFormat(TITULO_DO_CAPITULO_DO_LIVRO) + "')";
         Statement stmt = connection.createStatement();
 
         ResultSet rs = stmt.executeQuery(sql);
         //checa se a produÃ§Ã£o jÃ¡ existe
         if (!rs.next()) {
-            sql = "insert into capitulos("
+            sql = "insert into teste.capitulos("
                     + "tipo_producao,sequencia_producao,doi,capitulo_tipo,titulo,"
                     + "ano_trabalho,livro_nro_volumes,livro_nro_serie,livro_titulo,"
                     + "isbn,autores,pagina_inicio,pagina_fim,nome_editora,created_at"
@@ -64,16 +64,16 @@ public class CapituloELivro {
                     + "'" + PAGINA_FINAL + "',"
                     + "'" + Utils.strFormat(NOME_DA_EDITORA) + "', now())";
             stmt.executeUpdate(sql);
-            sql = "insert into capitulos_autores(fk_curriculo,fk_capitulo)"
-                    + "values ((select id from curriculos where nome_completo = '" + Utils.strFormat(cur.getNOME_COMPLETO()) + "'),"
-                    + "        (select max(id) from capitulos) )";
+            sql = "insert into teste.capitulos_autores(fk_curriculo,fk_capitulo)"
+                    + "values ((select id from teste.curriculos where nome_completo = '" + Utils.strFormat(cur.getNOME_COMPLETO()) + "'),"
+                    + "        (select max(id) from teste.capitulos) )";
             stmt.executeUpdate(sql);
 
         }
         //checa se a produÃ§Ã£o estÃ¡ associada ao autor
         else {
             int id = rs.getInt("id");
-            sql = "update capitulos set "
+            sql = "update teste.capitulos set "
                     + "doi='" + DOI + "', "
                     + "capitulo_tipo='" + TIPO + "', "
                     + "titulo='" + Utils.strFormat(TITULO_DO_CAPITULO_DO_LIVRO) + "', "
@@ -91,7 +91,7 @@ public class CapituloELivro {
 
             stmt.executeUpdate(sql);
 
-            sql = "select fk_curriculo from capitulos_autores "
+            sql = "select fk_curriculo from teste.capitulos_autores "
                     + "where fk_capitulo = '" + id + "'"
                     + "     and fk_curriculo = '" + cur.getNUMERO_IDENTIFICADOR()+ "'";
             rs = stmt.executeQuery(sql);
@@ -100,8 +100,8 @@ public class CapituloELivro {
 
             //se nÃ£o estiver associada, inclui
             if (!rs.next()) {
-                sql = "insert into capitulos_autores(fk_curriculo,fk_capitulo)"
-                        + "values ((select id from curriculos where nome_completo = '" + Utils.strFormat(cur.getNOME_COMPLETO()) + "'),"
+                sql = "insert into teste.capitulos_autores(fk_curriculo,fk_capitulo)"
+                        + "values ((select id from teste.curriculos where nome_completo = '" + Utils.strFormat(cur.getNOME_COMPLETO()) + "'),"
                         + "'"+ id + "')";
                 stmt.executeUpdate(sql);
             }

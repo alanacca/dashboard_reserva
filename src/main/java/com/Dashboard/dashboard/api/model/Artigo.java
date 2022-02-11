@@ -67,13 +67,13 @@ public class Artigo {
     }
 
     public void persist(Connection connection, Curriculo cur) throws SQLException {
-        String sql = "select id from periodicos where lower(titulo) = lower('" + Utils.strFormat(TITULO_DO_ARTIGO) + "')";
+        String sql = "select id from teste.periodicos where lower(titulo) = lower('" + Utils.strFormat(TITULO_DO_ARTIGO) + "')";
         Statement stmt = connection.createStatement();
 
         ResultSet rs = stmt.executeQuery(sql);
         //checa se a produÃ§Ã£o jÃ¡ existe
         if (!rs.next()) {
-            sql = "insert into periodicos("
+            sql = "insert into teste.periodicos("
                     + "tipo_producao,sequencia_producao,doi,natureza,titulo,"
                     + "ano_trabalho,volume,fasciculo,serie,"
                     + "titulo_periodico,issn,autores,pagina_inicio,pagina_fim,created_at) values ("
@@ -97,16 +97,16 @@ public class Artigo {
             {
                 System.out.println("erro:" + sql);
             }
-            sql = "insert into periodicos_autores(fk_curriculo,fk_periodicos)"
-                    + "values ((select id from curriculos where nome_completo = '" + Utils.strFormat(cur.getNOME_COMPLETO()) + "'),"
-                    + "        (select max(id) from periodicos) )";
+            sql = "insert into teste.periodicos_autores(fk_curriculo,fk_periodicos)"
+                    + "values ((select id from teste.curriculos where nome_completo = '" + Utils.strFormat(cur.getNOME_COMPLETO()) + "'),"
+                    + "        (select max(id) from teste.periodicos) )";
             stmt.executeUpdate(sql);
 
         }
         //checa se a produÃ§Ã£o estÃ¡ associada ao autor
         else {
             int id = rs.getInt("id");
-            sql = "update periodicos set "
+            sql = "update teste.periodicos set "
                     + "tipo_producao='" + TIPO + "',"
                     + "doi='" + DOI + "',"
                     + "natureza='" + NATUREZA + "',"
@@ -126,7 +126,7 @@ public class Artigo {
             stmt.executeUpdate(sql);
 
 
-            sql = "select fk_curriculo from periodicos_autores "
+            sql = "select fk_curriculo from teste.periodicos_autores "
                     + "where fk_periodicos = '" + id + "'"
                     + "     and fk_curriculo = '" + cur.getNUMERO_IDENTIFICADOR() + "'";
             rs = stmt.executeQuery(sql);
@@ -135,7 +135,7 @@ public class Artigo {
 
             //se nÃ£o estiver associada, inclui
             if (!rs.next()) {
-                sql = "insert into periodicos_autores(fk_curriculo,fk_periodicos)"
+                sql = "insert into teste.periodicos_autores(fk_curriculo,fk_periodicos)"
                         + "values ((select id from curriculos where nome_completo = '" + Utils.strFormat(cur.getNOME_COMPLETO()) + "'),"
                         + "'"+ id + "')";
                 stmt.executeUpdate(sql);

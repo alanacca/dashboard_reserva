@@ -65,6 +65,26 @@ public class extratorLSG extends DefaultHandler {
             System.out.println(msg);
         }
     }
+    // os métodos startDocument, endDocument, startElement, endElement e
+    // characters, listados a seguir, representam os métodos de call-back da API
+    // SAX
+
+    /**
+     * evento startDocument do SAX. Disparado antes do processamento da primeira
+     * linha
+     */
+    public void startDocument() {
+        System.out.println("\nIniciando o Parsing...\n");
+    }
+
+    /**
+     * evento endDocument do SAX. Disparado depois do processamento da última
+     * linha
+     */
+    public void endDocument() {
+        System.out.println("\nFim do Parsing...");
+    }
+
 
     public void startElement(String uri, String localName, String qName,
                              Attributes atts) {
@@ -395,6 +415,75 @@ public class extratorLSG extends DefaultHandler {
             lastTecnica.setOutras_informacoes(lastTecnica.getOutras_informacoes()+"InstituiÃ§Ã£o: " + atts.getValue("INSTITUICAO-DEPOSITO-REGISTRO") + "; ");
             lastTecnica.setOutras_informacoes(lastTecnica.getOutras_informacoes()+"Depositante: " + atts.getValue("NOME-DO-DEPOSITANTE") + "; ");
             lastTecnica.setOutras_informacoes(lastTecnica.getOutras_informacoes()+"Titular: " + atts.getValue("NOME-DO-TITULAR") + "; ");
+        }
+    }
+    /**
+     * evento endElement do SAX. Disparado quando o processador SAX identifica o
+     * fechamento de uma tag (ex: )
+     */
+    public void endElement(String uri, String localName, String qName)
+            throws SAXException {
+
+        tagAtual = "";
+
+        if ((qName.compareTo("ARTIGO-PUBLICADO") == 0) ||
+                (qName.compareTo("ARTIGO-ACEITO-PARA-PUBLICACAO") == 0)){
+            artigos.add(lastArtigo);
+            lastArtigo = null;
+        }
+
+        if (qName.compareTo("TRABALHO-EM-EVENTOS") == 0) {
+            evento.add(lastEvento);
+            lastEvento = null;
+        }
+
+        if (qName.compareTo("CAPITULO-DE-LIVRO-PUBLICADO") == 0||
+                qName.compareTo("LIVRO-PUBLICADO-OU-ORGANIZADO")==0) {
+            capitulo.add(lastCapitulo);
+            lastCapitulo = null;
+        }
+        if (qName.compareTo("PROJETO-DE-PESQUISA") == 0) {
+            projeto.add(lastProjeto);
+            lastProjeto = null;
+        }
+
+        if (qName.compareTo("ORIENTACOES-CONCLUIDAS-PARA-MESTRADO") == 0 ||
+                qName.compareTo("ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO") ==0 ||
+                qName.compareTo("OUTRAS-ORIENTACOES-CONCLUIDAS")==0 ||
+                qName.compareTo("ORIENTACAO-EM-ANDAMENTO-DE-MESTRADO") ==0  ||
+                qName.compareTo("ORIENTACAO-EM-ANDAMENTO-DE-DOUTORADO")==0)  {
+            orientacao.add(lastOrientacao);
+            lastOrientacao = null;
+        }
+
+        if (qName.compareTo("SOFTWARE")==0) {
+            tecnica.add(lastTecnica);
+            lastTecnica = null;
+        }
+
+        if (qName.compareTo("PATENTE")==0) {
+            tecnica.add(lastTecnica);
+            lastTecnica = null;
+        }
+    }
+
+    /**
+     * evento characters do SAX. É onde podemos recuperar as informações texto
+     * contidas no documento XML (textos contidos entre tags). Neste exemplo,
+     * recuperamos os nomes dos países, a população e a moeda
+     *
+     */
+    public void characters(char[] ch, int start, int length)
+            throws SAXException {
+
+        String texto = new String(ch, start, length);
+
+        // ------------------------------------------------------------
+        // --- TRATAMENTO DAS INFORMAÇÕES DE ACORDO COM A TAG ATUAL ---
+        // ------------------------------------------------------------
+
+        if ((tagAtual != null) && (tagAtual.compareTo("DADOS-GERAIS") == 0)) {
+            System.out.print(texto + " - nome: " + cur.getNOME_COMPLETO());
         }
     }
 }

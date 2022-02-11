@@ -28,13 +28,13 @@ public class Tecnica {
     private String autores = "";
 
     public void persist(Connection connection, Curriculo cur) throws SQLException {
-        String sql = "select id from producoes_tecnicas where lower(titulo) = lower('" + Utils.strFormat(titulo) + "')";
+        String sql = "select id from teste.producoes_tecnicas where lower(titulo) = lower('" + Utils.strFormat(titulo) + "')";
         Statement stmt = connection.createStatement();
 
         ResultSet rs = stmt.executeQuery(sql);
         //checa se a produÃ§Ã£o jÃ¡ existe
         if (!rs.next()) {
-            sql = "insert into producoes_tecnicas("
+            sql = "insert into teste.producoes_tecnicas("
                     + "sequencia_producao, tipo, ano, titulo, outras_informacoes, financiadora, autores,created_at"
                     + ") values ("
                     + "'" + sequencia_producao + "', "
@@ -50,9 +50,9 @@ public class Tecnica {
             {
                 System.out.println("erro:" + sql);
             }
-            sql = "insert into autores_prod_tecnicas(fk_curriculo,fk_producao_tecnica)"
+            sql = "insert into teste.autores_prod_tecnicas(fk_curriculo,fk_producao_tecnica)"
                     + "values ('" + cur.getNUMERO_IDENTIFICADOR() + "',"
-                    + "        (select max(id) from producoes_tecnicas) )";
+                    + "        (select max(id) from teste.producoes_tecnicas) )";
             stmt.executeUpdate(sql);
 
         }
@@ -60,7 +60,7 @@ public class Tecnica {
         else {
 
             int id = rs.getInt("id");
-            sql= "update producoes_tecnicas set "
+            sql= "update teste.producoes_tecnicas set "
                     + "ano='" + ano +"', "
                     + "titulo='" + Utils.strFormat(titulo) + "', "
                     + "outras_informacoes='" + Utils.strFormat(outras_informacoes) + "', "
@@ -71,7 +71,7 @@ public class Tecnica {
 
             stmt.executeUpdate(sql);
 
-            sql = "select fk_curriculo from autores_prod_tecnicas "
+            sql = "select fk_curriculo from teste.autores_prod_tecnicas "
                     + "where fk_producao_tecnica = '" + id + "'"
                     + "     and fk_curriculo = '" + cur.getNUMERO_IDENTIFICADOR() + "'";
             rs = stmt.executeQuery(sql);
@@ -80,7 +80,7 @@ public class Tecnica {
 
             //se nÃ£o estiver associada, inclui
             if (!rs.next()) {
-                sql = "insert into autores_prod_tecnicas(fk_curriculo,fk_producao_tecnica,created_at)"
+                sql = "insert into teste.autores_prod_tecnicas(fk_curriculo,fk_producao_tecnica,created_at)"
                         + "values ('" + cur.getNUMERO_IDENTIFICADOR() + "',"
                         + "'"+ id + "',now())";
                 stmt.executeUpdate(sql);

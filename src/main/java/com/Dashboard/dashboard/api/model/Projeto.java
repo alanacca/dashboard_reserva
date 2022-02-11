@@ -39,14 +39,14 @@ public class Projeto {
     public void persist(Connection connection, Curriculo cur) throws SQLException {
         if (SITUACAO.compareTo("DESATIVADO") ==0) return;
 
-        String sql = "select id from projetos where lower(nome) = lower('" + Utils.strFormat(NOME_DO_PROJETO) + "')";
+        String sql = "select id from teste.projetos where lower(nome) = lower('" + Utils.strFormat(NOME_DO_PROJETO) + "')";
         Statement stmt = connection.createStatement();
 
         ResultSet rs = stmt.executeQuery(sql);
         //checa se o projeto jÃ¡ existe
         if (!rs.next()) {
 
-            sql = "insert into projetos("
+            sql = "insert into teste.projetos("
                     + "sequencia_projeto,nome,situacao,"
                     + "ano_inicio, ano_fim, natureza, descricao,"
                     + "nro_graduacao, nro_mestrado_academico,"
@@ -69,16 +69,16 @@ public class Projeto {
                 System.out.println("Erro: " + sql);
             }
 
-            sql = "insert into integrantes_projetos(fk_curriculo,fk_projeto, is_responsavel)"
-                    + "values ((select id from curriculos where nome_completo = '" + Utils.strFormat(cur.getNOME_COMPLETO()) + "'),"
-                    + "        (select max(id) from projetos), " + isReponsavel.toString() + ")";
+            sql = "insert into teste.integrantes_projetos(fk_curriculo,fk_projeto, is_responsavel)"
+                    + "values ((select id from teste.curriculos where nome_completo = '" + Utils.strFormat(cur.getNOME_COMPLETO()) + "'),"
+                    + "        (select max(id) from teste.projetos), " + isReponsavel.toString() + ")";
             stmt.executeUpdate(sql);
 
             for (Financiador f:finaciamento) {
-                sql = "insert into financiadores_projetos (fk_curriculo, fk_projeto, nome_instituicao, natureza, created_at)"
+                sql = "insert into teste.financiadores_projetos (fk_curriculo, fk_projeto, nome_instituicao, natureza, created_at)"
                         + "values ("
                         + "'" + cur.getNUMERO_IDENTIFICADOR() + "',"
-                        + "(select max(id) from projetos),"
+                        + "(select max(id) from teste.projetos),"
                         + "'"+ Utils.strFormat(f.getNOME_INSTITUICAO()) + "',"
                         + "'"+ Utils.strFormat(f.getNATUREZA()) + "', now())";
                 stmt.executeUpdate(sql);
@@ -88,15 +88,15 @@ public class Projeto {
         //checa se o projeto estÃ¡ associada ao integrante
         else {
             int id = rs.getInt("id");
-            sql = "select fk_curriculo from integrantes_projetos "
+            sql = "select fk_curriculo from teste.integrantes_projetos "
                     + "where fk_projeto = '" + id + "'"
                     + "     and fk_curriculo = '" + cur.getNUMERO_IDENTIFICADOR() + "'";
             rs = stmt.executeQuery(sql);
 
             //se nÃ£o estiver associada, inclui
             if (!rs.next()) {
-                sql = "insert into integrantes_projetos(fk_curriculo,fk_projeto,created_at)"
-                        + "values ((select id from curriculos where nome_completo = '" + Utils.strFormat(cur.getNOME_COMPLETO()) + "'),"
+                sql = "insert into teste.integrantes_projetos(fk_curriculo,fk_projeto,created_at)"
+                        + "values ((select id from teste.curriculos where nome_completo = '" + Utils.strFormat(cur.getNOME_COMPLETO()) + "'),"
                         + "'"+ id + "', now())";
                 stmt.executeUpdate(sql);
 

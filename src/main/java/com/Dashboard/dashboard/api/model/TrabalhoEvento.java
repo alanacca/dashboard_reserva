@@ -42,13 +42,13 @@ public class TrabalhoEvento {
     private String AUTORES = "";
 
     public void persist(Connection connection, Curriculo cur) throws SQLException {
-        String sql = "select id from artigo_eventos where lower(titulo) = lower('" + Utils.strFormat(TITULO_DO_TRABALHO) + "')";
+        String sql = "select id from teste.artigo_eventos where lower(titulo) = lower('" + Utils.strFormat(TITULO_DO_TRABALHO) + "')";
         Statement stmt = connection.createStatement();
 
         ResultSet rs = stmt.executeQuery(sql);
         //checa se a produÃ§Ã£o jÃ¡ existe
         if (!rs.next()) {
-            sql = "insert into artigo_eventos("
+            sql = "insert into teste.artigo_eventos("
                     + "tipo_producao,sequencia_producao,doi,natureza,titulo,"
                     + "ano_trabalho,volume,fasciculo,serie,"
                     + "titulo_anais_ou_proceedings,issn,autores,pagina_inicio,pagina_fim,"
@@ -73,16 +73,16 @@ public class TrabalhoEvento {
                     + "'" + Utils.strFormat(CIDADE_DO_EVENTO) + "',"
                     + "'" + Utils.strFormat(NOME_DA_EDITORA) + "', now())";
             stmt.executeUpdate(sql);
-            sql = "insert into artigo_evento_autores(fk_curriculo,fk_artigo_evento)"
-                    + "values ((select id from curriculos where nome_completo = '" + Utils.strFormat(cur.getNOME_COMPLETO()) + "'),"
-                    + "        (select max(id) from artigo_eventos) )";
+            sql = "insert into teste.artigo_evento_autores(fk_curriculo,fk_artigo_evento)"
+                    + "values ((select id from teste.curriculos where nome_completo = '" + Utils.strFormat(cur.getNOME_COMPLETO()) + "'),"
+                    + "        (select max(id) from teste.artigo_eventos) )";
             stmt.executeUpdate(sql);
 
         }
         //checa se a produÃ§Ã£o estÃ¡ associada ao autor
         else {
             int id = rs.getInt("id");
-            sql = "update artigo_eventos set "
+            sql = "update teste.artigo_eventos set "
                     + "doi='" + DOI + "',"
                     + "natureza='" + NATUREZA + "',"
                     + "titulo='" + Utils.strFormat(TITULO_DO_TRABALHO) + "',"
@@ -105,7 +105,7 @@ public class TrabalhoEvento {
 
             stmt.executeUpdate(sql);
 
-            sql = "select fk_curriculo from artigo_evento_autores "
+            sql = "select fk_curriculo from teste.artigo_evento_autores "
                     + "where fk_artigo_evento = '" + id + "'"
                     + "     and fk_curriculo = '" + cur.getNUMERO_IDENTIFICADOR() + "'";
             rs = stmt.executeQuery(sql);
@@ -114,8 +114,8 @@ public class TrabalhoEvento {
 
             //se nÃ£o estiver associada, inclui
             if (!rs.next()) {
-                sql = "insert into artigo_evento_autores(fk_curriculo,fk_artigo_evento)"
-                        + "values ((select id from curriculos where nome_completo = '" + Utils.strFormat(cur.getNOME_COMPLETO()) + "'),"
+                sql = "insert into teste.artigo_evento_autores(fk_curriculo,fk_artigo_evento)"
+                        + "values ((select id from teste.curriculos where nome_completo = '" + Utils.strFormat(cur.getNOME_COMPLETO()) + "'),"
                         + "'"+ id + "')";
                 stmt.executeUpdate(sql);
             }

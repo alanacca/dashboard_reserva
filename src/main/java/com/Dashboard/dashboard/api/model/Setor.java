@@ -21,23 +21,23 @@ public class Setor {
 
     public void persist(Connection connection, Curriculo cur, boolean principal) throws SQLException {
         Statement stmt = connection.createStatement();
-        String sql = "delete from setor_curriculo where fk_curriculo = " + cur.getNUMERO_IDENTIFICADOR();
+        String sql = "delete from teste.setor_curriculo where fk_curriculo = " + cur.getNUMERO_IDENTIFICADOR();
         stmt.executeUpdate(sql);
 
-        sql = "select id from setores where '" + nome + "' = nome";
+        sql = "select id from teste.setores where '" + nome + "' = nome";
         ResultSet rs = stmt.executeQuery(sql);
 
         //checa se o setor jÃ¡ existe
         if (!rs.next()) {
-            sql = "insert into setores (nome) "
+            sql = "insert into teste.setores (nome) "
                     + "values ('" + nome + "')";
             stmt.executeUpdate(sql);
-            sql = "select id from setores where '" + nome + "' = nome";
+            sql = "select id from teste.setores where '" + nome + "' = nome";
             rs = stmt.executeQuery(sql);
             rs.next();
 
         }
-        sql = "insert into setor_curriculo (fk_curriculo, fk_setor, is_principal) "
+        sql = "insert into teste.setor_curriculo (fk_curriculo, fk_setor, is_principal) "
                 + "values (" + cur.getNUMERO_IDENTIFICADOR() + ", "
                 + "" + rs.getInt(1) + ","
                 + "" + principal + ")";

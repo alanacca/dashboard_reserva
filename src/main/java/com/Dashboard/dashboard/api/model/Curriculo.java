@@ -38,7 +38,7 @@ public class Curriculo {
     }
 
     public Boolean checkUpdate(Connection connection) throws SQLException {
-        String sql = "select id from curriculos where id= '" + NUMERO_IDENTIFICADOR+"'"
+        String sql = "select id from teste.curriculos where id= '" + NUMERO_IDENTIFICADOR+"'"
                 + "and data_atualizacao >= '" + Utils.dateFormat(DATA_ATUALIZACAO) + "'";
         Statement stmt = connection.createStatement();
         ResultSet rs = stmt.executeQuery(sql);
@@ -52,14 +52,14 @@ public class Curriculo {
 
         if (email == null) email = "";
 
-        String sql = "select id from curriculos where id = '" + NUMERO_IDENTIFICADOR + "'";
+        String sql = "select id from teste.curriculos where id = '" + NUMERO_IDENTIFICADOR + "'";
         Statement stmt = connection.createStatement();
 
 
         ResultSet rs = stmt.executeQuery(sql);
         //checa se o curriculo jÃ¡ existe
         if (!rs.next()) {
-            sql = "insert into curriculos(id,data_atualizacao,nome_completo,resumo_cv,"
+            sql = "insert into teste.curriculos(id,data_atualizacao,nome_completo,resumo_cv,"
                     + "nome_citacoes,nome_instituicao_empresa,nome_orgao,ddd,telefone,homepage,created_at,"
                     + "cpf, data_nascimento, email)"
                     + "values ('" + NUMERO_IDENTIFICADOR + "',"
@@ -83,7 +83,7 @@ public class Curriculo {
             stmt.executeUpdate(sql);
         }
         else {
-            sql = "update curriculos set "
+            sql = "update teste.curriculos set "
                     + "data_atualizacao='" + Utils.dateFormat(DATA_ATUALIZACAO) + "', "
                     + "nome_completo='" + Utils.strFormat(NOME_COMPLETO) + "', "
                     + "resumo_cv='" + Utils.strFormat(TEXTO_RESUMO_CV_RH) + "', "
@@ -109,14 +109,14 @@ public class Curriculo {
 
     public void persist(Connection connection) throws SQLException{
 
-        String sql = "select id from curriculos where id = '" + NUMERO_IDENTIFICADOR + "'";
+        String sql = "select id from teste.curriculos where id = '" + NUMERO_IDENTIFICADOR + "'";
         Statement stmt = connection.createStatement();
 
 
         ResultSet rs = stmt.executeQuery(sql);
         //checa se o curriculo jÃ¡ existe
         if (!rs.next()) {
-            sql = "insert into curriculos(id,data_atualizacao,nome_completo,resumo_cv,"
+            sql = "insert into teste.curriculos(id,data_atualizacao,nome_completo,resumo_cv,"
                     + "nome_citacoes,nome_instituicao_empresa,nome_orgao,ddd,telefone,homepage,created_at)"
                     + "values ('" + NUMERO_IDENTIFICADOR + "',"
                     + "'" + Utils.dateFormat(DATA_ATUALIZACAO) + "', "
@@ -133,7 +133,7 @@ public class Curriculo {
             stmt.executeUpdate(sql);
         }
         else {
-            sql = "update curriculos set "
+            sql = "update teste.curriculos set "
                     + "data_atualizacao='" + Utils.dateFormat(DATA_ATUALIZACAO) + "', "
                     + "nome_completo='" + Utils.strFormat(NOME_COMPLETO) + "', "
                     + "resumo_cv='" + Utils.strFormat(TEXTO_RESUMO_CV_RH) + "', "

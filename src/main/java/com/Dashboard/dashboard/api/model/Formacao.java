@@ -37,7 +37,7 @@ public class Formacao {
 
 
     public void persist(Connection connection, Curriculo cur) throws SQLException {
-        String sql = "select id from formacoes where fk_curriculo = '" + cur.getNUMERO_IDENTIFICADOR()+ "' "
+        String sql = "select id from teste.formacoes where fk_curriculo = '" + cur.getNUMERO_IDENTIFICADOR()+ "' "
                 + "and titulo_trabalho = '" + Utils.strFormat(titulo_trabalho) + "'";
 
         Statement stmt = connection.createStatement();
@@ -45,17 +45,17 @@ public class Formacao {
         //checa se a produÃ§Ã£o jÃ¡ existe
         if (rs.next()) {
 
-            sql = "delete from formacoes where fk_curriculo = '" + cur.getNUMERO_IDENTIFICADOR() + "' "
+            sql = "delete from teste.formacoes where fk_curriculo = '" + cur.getNUMERO_IDENTIFICADOR() + "' "
                     + "and titulo_trabalho = '" + Utils.strFormat(titulo_trabalho) + "'";
             stmt.executeUpdate(sql);
         }
 
 
-        sql = "insert into formacoes(fk_curriculo,tipo_formacao,titulo_trabalho,titulo_residencia_medica,"
+        sql = "insert into teste.formacoes(fk_curriculo,tipo_formacao,titulo_trabalho,titulo_residencia_medica,"
                 + "nome_orientador,nome_co_orientador,nome_instituicao,nome_orgao,nome_curso,ano_inicio,ano_conclusao,"
                 + "ano_obtencao_titulo,carga_horaria)"
                 + " values ("
-                + " (select id from curriculos where nome_completo = '" + Utils.strFormat(cur.getNOME_COMPLETO()) + "'),"
+                + " (select id from teste.curriculos where nome_completo = '" + Utils.strFormat(cur.getNOME_COMPLETO()) + "'),"
                 + "'" + tipo_formacao + "',"
                 + "'" + Utils.strFormat(titulo_trabalho) + "',"
                 + "'" + Utils.strFormat(titulo_residencia_medica) + "',"

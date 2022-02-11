@@ -33,7 +33,7 @@ public class Orientacao {
     private Boolean is_finalizado=false;
 
     public void persist(Connection connection, Curriculo cur) throws SQLException {
-        String sql = "select id from orientacoes where fk_curriculo = '" + cur.getNUMERO_IDENTIFICADOR() + "' "
+        String sql = "select id from teste.orientacoes where fk_curriculo = '" + cur.getNUMERO_IDENTIFICADOR() + "' "
                 + "and titulo = '" + Utils.strFormat(titulo) + "'";
 
         Statement stmt = connection.createStatement();
@@ -41,16 +41,16 @@ public class Orientacao {
         //checa se a produÃ§Ã£o jÃ¡ existe
         if (rs.next()) {
 
-            sql = "delete from orientacoes where fk_curriculo = '" + cur.getNUMERO_IDENTIFICADOR() + "' "
+            sql = "delete from teste.orientacoes where fk_curriculo = '" + cur.getNUMERO_IDENTIFICADOR() + "' "
                     + "and titulo = '" + Utils.strFormat(titulo) + "'";
             stmt.executeUpdate(sql);
         }
 
-        sql = "insert into orientacoes(fk_curriculo,sequencia_orientacao, natureza, tipo, titulo, "
+        sql = "insert into teste.orientacoes(fk_curriculo,sequencia_orientacao, natureza, tipo, titulo, "
                 + "ano, tipo_orientacao, nome_orientando, nome_instituicao, nome_curso, "
                 + "is_finalizado,created_at) "
                 + " values ("
-                + " (select id from curriculos where nome_completo = '" + Utils.strFormat(cur.getNOME_COMPLETO()) + "'),"
+                + " (select id from teste.curriculos where nome_completo = '" + Utils.strFormat(cur.getNOME_COMPLETO()) + "'),"
                 + "'" + sequencia_orientacao + "',"
                 + "'" + natureza + "',"
                 + "'" + tipo + "',"
