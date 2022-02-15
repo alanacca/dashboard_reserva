@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/pessoas")
@@ -22,6 +23,14 @@ public class PessoasController {
 
     @Autowired
     private ApplicationEventPublisher publisher;
+
+    @GetMapping("/verificaNome/{nome}")
+    public boolean existsBynomeCompleto(@PathVariable String nome){
+        return pessoasService.existsBynomeCompleto(nome);
+    }
+
+    @GetMapping("/verificaId/{id}")
+    public boolean existsByIdPlataforma(@PathVariable String id){return pessoasService.existsByIdPlataforma(id);}
 
     @GetMapping("/listar")
     public List<Pessoas> listar(){

@@ -34,5 +34,9 @@ public class PessoasService {
 
     public Optional<Pessoas> findByNome(Integer id){return this.pessoasRepository.findById(id);}
 
+    public boolean existsByIdPlataforma(String IdPlataforma){ return this.pessoasRepository.existsByIdPlataforma(IdPlataforma);}
+
+    public boolean existsBynomeCompleto(String nomeCompleto){ return this.pessoasRepository.existsBynomeCompleto(nomeCompleto);}
+
 
 }
