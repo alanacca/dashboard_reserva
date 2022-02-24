@@ -14,7 +14,7 @@ import java.util.zip.ZipInputStream;
 
 @Service
 public class PesquisaService {
-    public void Inicializador() throws ClassNotFoundException, SQLException {
+    public void Inicializador(String defFolder) throws ClassNotFoundException, SQLException {
         Properties prop = new Properties();
         InputStream input = null;
 
@@ -23,7 +23,7 @@ public class PesquisaService {
 
             // load a properties file
             prop.load(input);
-            Inicio.defFolder = prop.getProperty("defFolder");
+            Inicio.defFolder = defFolder;
             Inicio.hostdb = prop.getProperty("hostdb");
             Inicio.namedb = prop.getProperty("namedb");
             Inicio.userdb = prop.getProperty("userdb");

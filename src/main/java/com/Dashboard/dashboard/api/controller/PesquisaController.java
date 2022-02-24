@@ -1,15 +1,13 @@
 package com.Dashboard.dashboard.api.controller;
 
-import com.Dashboard.dashboard.api.model.Inicio;
-import com.Dashboard.dashboard.api.model.Pessoas;
+import com.Dashboard.dashboard.api.model.Plataforma_Pessoa;
 import com.Dashboard.dashboard.api.service.PesquisaService;
 import com.Dashboard.dashboard.api.service.PessoasService;
+import com.Dashboard.dashboard.api.service.PlataformaPessoaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/pesquisa")
@@ -21,21 +19,28 @@ public class PesquisaController {
     @Autowired
     PesquisaService pesquisaService;
 
-    @GetMapping("/{id}")
-    public void pesquisar(@PathVariable Integer id) throws SQLException, ClassNotFoundException {
+    @Autowired
+    PlataformaPessoaService plataformaPessoaService;
 
-//        System.out.println(pessoasService.findByNome(id));
+    @GetMapping("/{idPessoa}/{idPlat}")
+    public void pesquisar(@PathVariable("idPessoa") Integer idPessoa,
+                          @PathVariable("idPlat") Integer idPlat) throws SQLException, ClassNotFoundException {
+        String defFolder = "";
+        if(idPlat == 1){
+            defFolder = "/home/alana/Documentos/DashBoard/Curriculos/";
+        }
 
-        Optional<Pessoas> activePessoa = pessoasService.findByNome(id);
-        Pessoas pessoa = activePessoa.get();
-//        return pessoa;
-//        pesquisaService.Inicializador();
-//        pesquisaService.unzip(Inicio.defFolder+pessoa.getIdPlataforma()+".zip",Inicio.defFolder+pessoa.getIdPlataforma()+".xml");
-//        try{
-//            pesquisaService.parseOneLattes(pessoa.getIdPlataforma(), Inicio.defFolder+pessoa.getIdPlataforma()+".xml/"+"curriculo.xml",null);
-//        }catch (Exception e) {
-//            System.out.println("erro");
-//        }
-//        pesquisaService.finalizar();
+        Plataforma_Pessoa plataformaPessoa = this.plataformaPessoaService.findByFkPlataformaAndFkPessoa(idPlat, idPessoa);
+        System.out.println("asd");
+        System.out.println(plataformaPessoa);
+
+        pesquisaService.Inicializador(defFolder);
+        pesquisaService.unzip(defFolder+plataformaPessoa.getIdPlataforma()+".zip",defFolder+plataformaPessoa.getIdPlataforma()+".xml");
+        try{
+            pesquisaService.parseOneLattes(plataformaPessoa.getIdPlataforma(), defFolder+plataformaPessoa.getIdPlataforma()+".xml/"+"curriculo.xml",null);
+        }catch (Exception e) {
+            System.out.println("erro");
+        }
+        pesquisaService.finalizar();
     }
 }

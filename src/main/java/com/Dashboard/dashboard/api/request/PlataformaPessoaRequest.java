@@ -2,7 +2,6 @@ package com.Dashboard.dashboard.api.request;
 
 
 import com.Dashboard.dashboard.api.model.Pessoas;
-import com.Dashboard.dashboard.api.model.PlataformaPessoa;
 
 public class PlataformaPessoaRequest {
     public String idPlataforma;

@@ -1,8 +1,6 @@
 package com.Dashboard.dashboard.api.controller;
 
-import com.Dashboard.dashboard.api.model.PlataformaPessoa;
 import com.Dashboard.dashboard.api.model.Plataformas;
-import com.Dashboard.dashboard.api.service.PlataformaPessoaService;
 import com.Dashboard.dashboard.api.service.PlataformaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

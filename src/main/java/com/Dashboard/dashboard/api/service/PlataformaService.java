@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PlataformaService {
@@ -16,4 +17,6 @@ public class PlataformaService {
     PlataformasRepository plataformasRepository;
 
     public List<Plataformas> findAll(){return plataformasRepository.findAll();}
+
+    public Optional<Plataformas> findById(Integer id){return this.plataformasRepository.findById(id);}
 }
