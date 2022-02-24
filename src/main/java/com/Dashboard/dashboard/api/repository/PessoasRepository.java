@@ -10,12 +10,12 @@ public interface PessoasRepository extends JpaRepository<Pessoas, Integer> {
 
     @Override
     Optional<Pessoas> findById(Integer id);
-
-    Optional<Pessoas> findByIdPlataforma(String idPlataforma);
-
-    Optional<Pessoas> findBynomeCompleto(String nomeCompleto);
-
-    boolean existsByIdPlataforma(String idPlataforma);
+//
+//    Optional<Pessoas> findByIdPlataforma(String idPlataforma);
+//
+//    Optional<Pessoas> findBynomeCompleto(String nomeCompleto);
+//
+//    boolean existsByIdPlataforma(String idPlataforma);
 
     boolean existsBynomeCompleto(String nomeCompleto);
 }

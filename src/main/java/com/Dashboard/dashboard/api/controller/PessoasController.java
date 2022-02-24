@@ -29,8 +29,8 @@ public class PessoasController {
         return pessoasService.existsBynomeCompleto(nome);
     }
 
-    @GetMapping("/verificaId/{id}")
-    public boolean existsByIdPlataforma(@PathVariable String id){return pessoasService.existsByIdPlataforma(id);}
+//    @GetMapping("/verificaId/{id}")
+//    public boolean existsByIdPlataforma(@PathVariable String id){return pessoasService.existsByIdPlataforma(id);}
 
     @GetMapping("/listar")
     public List<Pessoas> listar(){

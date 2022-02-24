@@ -29,13 +29,13 @@ public class PesquisaController {
         Optional<Pessoas> activePessoa = pessoasService.findByNome(id);
         Pessoas pessoa = activePessoa.get();
 //        return pessoa;
-        pesquisaService.Inicializador();
-        pesquisaService.unzip(Inicio.defFolder+pessoa.getIdPlataforma()+".zip",Inicio.defFolder+pessoa.getIdPlataforma()+".xml");
-        try{
-            pesquisaService.parseOneLattes(pessoa.getIdPlataforma(), Inicio.defFolder+pessoa.getIdPlataforma()+".xml/"+"curriculo.xml",null);
-        }catch (Exception e) {
-            System.out.println("erro");
-        }
-        pesquisaService.finalizar();
+//        pesquisaService.Inicializador();
+//        pesquisaService.unzip(Inicio.defFolder+pessoa.getIdPlataforma()+".zip",Inicio.defFolder+pessoa.getIdPlataforma()+".xml");
+//        try{
+//            pesquisaService.parseOneLattes(pessoa.getIdPlataforma(), Inicio.defFolder+pessoa.getIdPlataforma()+".xml/"+"curriculo.xml",null);
+//        }catch (Exception e) {
+//            System.out.println("erro");
+//        }
+//        pesquisaService.finalizar();
     }
 }

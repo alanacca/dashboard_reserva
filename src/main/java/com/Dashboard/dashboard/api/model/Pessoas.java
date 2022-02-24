@@ -19,12 +19,6 @@ public class Pessoas {
     @Column(name="nome_completo")
     private String nomeCompleto;
 
-    @Column(name="id_plataforma")
-    private String idPlataforma;
-
-    @Column(name="plataforma")
-    private String Platraforma;
-
     public Pessoas(){
 
     }
@@ -35,8 +29,10 @@ public class Pessoas {
 
     public Pessoas(PessoasRequest request){
         this.nomeCompleto = request.Nome_Completo;
-        this.idPlataforma = request.idPlataforma;
-        this.Platraforma = request.Plataforma;
+    }
+
+    public Pessoas(String nomeComp){
+        this.nomeCompleto = nomeComp;
     }
 }
 
