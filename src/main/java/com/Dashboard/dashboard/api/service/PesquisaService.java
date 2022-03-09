@@ -69,10 +69,10 @@ public class PesquisaService {
 
         //setores
         if (setores != null) {
-            Setor s = null;
+            Setores s = null;
             boolean first = true;
             for (String setor : setores) {
-                s = new Setor();
+                s = new Setores();
                 //se houver barra, tira tudo que estÃ¡ depois
                 s.setNome(setor);
                 try {
@@ -89,7 +89,7 @@ public class PesquisaService {
             }
         }
 
-        for (Formacao a : imp.formacao) {
+        for (Formacoes a : imp.formacoes) {
             try {
                 a.persist(Inicio.c, imp.cur);
             } catch (Exception e) {
@@ -97,7 +97,7 @@ public class PesquisaService {
             }
         }
 
-        for (Artigo a : imp.artigos) {
+        for (Periodicos a : imp.periodicos) {
             try {
                 a.persist(Inicio.c, imp.cur);
             } catch (Exception e) {
@@ -105,7 +105,7 @@ public class PesquisaService {
             }
         }
 
-        for (TrabalhoEvento a : imp.evento) {
+        for (ArtigoEventos a : imp.evento) {
             try {
                 a.persist(Inicio.c, imp.cur);
             } catch (Exception e) {
@@ -113,7 +113,7 @@ public class PesquisaService {
             }
         }
 
-        for (CapituloELivro a : imp.capitulo) {
+        for (Capitulos a : imp.capitulo) {
             try {
                 a.persist(Inicio.c, imp.cur);
             } catch (Exception e) {
@@ -121,7 +121,7 @@ public class PesquisaService {
             }
         }
 
-        for (Tecnica a : imp.tecnica) {
+        for (ProducoesTecnicas a : imp.producoesTecnicas) {
             try {
                 a.persist(Inicio.c, imp.cur);
             } catch (Exception e) {
@@ -129,7 +129,7 @@ public class PesquisaService {
             }
         }
 
-        for (Projeto a : imp.projeto) {
+        for (Projetos a : imp.projetos) {
             try {
                 a.persist(Inicio.c, imp.cur);
             } catch (Exception e) {
@@ -137,7 +137,7 @@ public class PesquisaService {
             }
         }
 
-        for (Orientacao a : imp.orientacao) {
+        for (Orientacoes a : imp.orientacoes) {
             try {
                 a.persist(Inicio.c, imp.cur);
             } catch (Exception e) {

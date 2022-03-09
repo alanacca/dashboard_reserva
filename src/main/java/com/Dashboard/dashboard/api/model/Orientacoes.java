@@ -13,7 +13,7 @@ import java.sql.Statement;
 @Entity
 @Table(schema = "teste", name="orientacoes")
 @SequenceGenerator(name = "teste.orientacoes_id_seq", sequenceName = "teste.orientacoes_id_seq", allocationSize = 1)
-public class Orientacao {
+public class Orientacoes {
     @Id
     @Column(name="id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "teste.orientacoes_id_seq")
@@ -32,8 +32,8 @@ public class Orientacao {
     private String nome_curso;
     private Boolean is_finalizado=false;
 
-    public void persist(Connection connection, Curriculo cur) throws SQLException {
-        String sql = "select id from teste.orientacoes where fk_curriculo = '" + cur.getNUMERO_IDENTIFICADOR() + "' "
+    public void persist(Connection connection, Curriculos cur) throws SQLException {
+        String sql = "select id from teste.orientacoes where fk_curriculo = '" + cur.getId() + "' "
                 + "and titulo = '" + Utils.strFormat(titulo) + "'";
 
         Statement stmt = connection.createStatement();
@@ -41,7 +41,7 @@ public class Orientacao {
         //checa se a produÃ§Ã£o jÃ¡ existe
         if (rs.next()) {
 
-            sql = "delete from teste.orientacoes where fk_curriculo = '" + cur.getNUMERO_IDENTIFICADOR() + "' "
+            sql = "delete from teste.orientacoes where fk_curriculo = '" + cur.getId() + "' "
                     + "and titulo = '" + Utils.strFormat(titulo) + "'";
             stmt.executeUpdate(sql);
         }

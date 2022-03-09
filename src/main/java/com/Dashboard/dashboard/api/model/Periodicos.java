@@ -13,7 +13,7 @@ import java.sql.Statement;
 @Entity
 @Table(schema = "teste", name="periodicos")
 @SequenceGenerator(name = "teste.periodicos_seq", sequenceName = "teste.periodicos_seq", allocationSize = 1)
-public class Artigo {
+public class Periodicos {
     @Id
     @Column(name="id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "teste.periodicos_seq")
@@ -66,7 +66,7 @@ public class Artigo {
                 + "\n" + ISSN+ "\n" +VOLUME+ "\n" +FASCICULO+ "\n" +SERIE+ "\n" +PAGINA_INICIAL+ "\n" +PAGINA_FINAL;
     }
 
-    public void persist(Connection connection, Curriculo cur) throws SQLException {
+    public void persist(Connection connection, Curriculos cur) throws SQLException {
         String sql = "select id from teste.periodicos where lower(titulo) = lower('" + Utils.strFormat(TITULO_DO_ARTIGO) + "')";
         Statement stmt = connection.createStatement();
 
@@ -128,7 +128,7 @@ public class Artigo {
 
             sql = "select fk_curriculo from teste.periodicos_autores "
                     + "where fk_periodicos = '" + id + "'"
-                    + "     and fk_curriculo = '" + cur.getNUMERO_IDENTIFICADOR() + "'";
+                    + "     and fk_curriculo = '" + cur.getId() + "'";
             rs = stmt.executeQuery(sql);
 
 

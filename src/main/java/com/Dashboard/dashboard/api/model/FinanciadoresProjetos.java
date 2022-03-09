@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Entity
 @Table(schema = "teste", name="financiadores_projetos")
 @SequenceGenerator(name = "teste.financiadores_projetos_id_seq", sequenceName = "teste.financiadores_projetos_id_seq", allocationSize = 1)
-public class Financiador {
+public class FinanciadoresProjetos {
     @Id
     @Column(name="id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "teste.financiadores_projetos_id_seq")

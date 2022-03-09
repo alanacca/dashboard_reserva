@@ -14,7 +14,7 @@ import java.util.ArrayList;
 @Entity
 @Table(schema = "teste", name="projetos")
 @SequenceGenerator(name = "teste.projetos_id_seq", sequenceName = "teste.projetos_id_seq", allocationSize = 1)
-public class Projeto {
+public class Projetos {
     @Id
     @Column(name="id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "teste.projetos_id_seq")
@@ -34,9 +34,9 @@ public class Projeto {
     private String NUMERO_DOUTORADO;
     private String integrantes = "";
     private Boolean isReponsavel = false;
-    private ArrayList<Financiador> finaciamento = new ArrayList<>();
+    private ArrayList<FinanciadoresProjetos> finaciamento = new ArrayList<>();
 
-    public void persist(Connection connection, Curriculo cur) throws SQLException {
+    public void persist(Connection connection, Curriculos cur) throws SQLException {
         if (SITUACAO.compareTo("DESATIVADO") ==0) return;
 
         String sql = "select id from teste.projetos where lower(nome) = lower('" + Utils.strFormat(NOME_DO_PROJETO) + "')";
@@ -74,10 +74,10 @@ public class Projeto {
                     + "        (select max(id) from teste.projetos), " + isReponsavel.toString() + ")";
             stmt.executeUpdate(sql);
 
-            for (Financiador f:finaciamento) {
+            for (FinanciadoresProjetos f:finaciamento) {
                 sql = "insert into teste.financiadores_projetos (fk_curriculo, fk_projeto, nome_instituicao, natureza, created_at)"
                         + "values ("
-                        + "'" + cur.getNUMERO_IDENTIFICADOR() + "',"
+                        + "'" + cur.getId() + "',"
                         + "(select max(id) from teste.projetos),"
                         + "'"+ Utils.strFormat(f.getNOME_INSTITUICAO()) + "',"
                         + "'"+ Utils.strFormat(f.getNATUREZA()) + "', now())";
@@ -90,7 +90,7 @@ public class Projeto {
             int id = rs.getInt("id");
             sql = "select fk_curriculo from teste.integrantes_projetos "
                     + "where fk_projeto = '" + id + "'"
-                    + "     and fk_curriculo = '" + cur.getNUMERO_IDENTIFICADOR() + "'";
+                    + "     and fk_curriculo = '" + cur.getId() + "'";
             rs = stmt.executeQuery(sql);
 
             //se nÃ£o estiver associada, inclui

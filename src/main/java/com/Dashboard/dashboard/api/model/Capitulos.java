@@ -13,32 +13,28 @@ import java.sql.Statement;
 @Entity
 @Table(schema = "teste", name="capitulos")
 @SequenceGenerator(name = "teste.capitulos_seq", sequenceName = "teste.capitulos_seq", allocationSize = 1)
-public class CapituloELivro {
+public class Capitulos {
     @Id
     @Column(name="id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "teste.capitulos_seq")
     private Integer idCapitulo;
 
     private String SEQUENCIA_PRODUCAO;
-    private String TIPO;
-    private String TITULO_DO_CAPITULO_DO_LIVRO;
-    private String ANO;
-    private String PAIS_DE_PUBLICACAO;
+    private String CAPITULO_TIPO;
+    private String TITULO;
+    private String ANO_TRABALHO;
     private String DOI;
-    private String TITULO_DO_LIVRO;
-    private String NUMERO_DE_VOLUMES;
-    private String PAGINA_INICIAL;
-    private String PAGINA_FINAL;
+    private String LIVRO_TITULO;
+    private String LIVRO_NRO_VOLUMES;
+    private String PAGINA_INICIO;
+    private String PAGINA_FIM;
     private String ISBN;
-    private String ORGANIZADORES;
-    private String NUMERO_DA_EDICAO_REVISAO;
-    private String NUMERO_DA_SERIE;
-    private String CIDADE_DA_EDITORA;
-    private String NOME_DA_EDITORA;
+    private String LIVRO_NRO_SERIE;
+    private String NOME_EDITORA;
     private String AUTORES = "";
 
-    public void persist(Connection connection, Curriculo cur) throws SQLException {
-        String sql = "select id from teste.capitulos where lower(titulo) = lower('" + Utils.strFormat(TITULO_DO_CAPITULO_DO_LIVRO) + "')";
+    public void persist(Connection connection, Curriculos cur) throws SQLException {
+        String sql = "select id from teste.capitulos where lower(titulo) = lower('" + Utils.strFormat(TITULO) + "')";
         Statement stmt = connection.createStatement();
 
         ResultSet rs = stmt.executeQuery(sql);
@@ -52,17 +48,17 @@ public class CapituloELivro {
                     + "'CAPITULO-DE-LIVRO',"
                     + "'" + SEQUENCIA_PRODUCAO + "', "
                     + "'" + DOI + "', "
-                    + "'" + TIPO + "', "
-                    + "'" + Utils.strFormat(TITULO_DO_CAPITULO_DO_LIVRO) + "', "
-                    + "'" + ANO + "', "
-                    + "'" + Utils.strFormat(NUMERO_DE_VOLUMES) + "', "
-                    + "'" + Utils.strFormat(NUMERO_DA_SERIE) + "', "
-                    + "'" + Utils.strFormat(TITULO_DO_LIVRO) + "', "
+                    + "'" + CAPITULO_TIPO + "', "
+                    + "'" + Utils.strFormat(TITULO) + "', "
+                    + "'" + ANO_TRABALHO + "', "
+                    + "'" + Utils.strFormat(LIVRO_NRO_VOLUMES) + "', "
+                    + "'" + Utils.strFormat(LIVRO_NRO_SERIE) + "', "
+                    + "'" + Utils.strFormat(LIVRO_TITULO) + "', "
                     + "'" + ISBN + "', "
                     + "'" + Utils.strFormat(AUTORES) + "', "
-                    + "'" + PAGINA_INICIAL + "', "
-                    + "'" + PAGINA_FINAL + "',"
-                    + "'" + Utils.strFormat(NOME_DA_EDITORA) + "', now())";
+                    + "'" + PAGINA_INICIO + "', "
+                    + "'" + PAGINA_FIM + "',"
+                    + "'" + Utils.strFormat(NOME_EDITORA) + "', now())";
             stmt.executeUpdate(sql);
             sql = "insert into teste.capitulos_autores(fk_curriculo,fk_capitulo)"
                     + "values ((select id from teste.curriculos where nome_completo = '" + Utils.strFormat(cur.getNOME_COMPLETO()) + "'),"
@@ -75,17 +71,17 @@ public class CapituloELivro {
             int id = rs.getInt("id");
             sql = "update teste.capitulos set "
                     + "doi='" + DOI + "', "
-                    + "capitulo_tipo='" + TIPO + "', "
-                    + "titulo='" + Utils.strFormat(TITULO_DO_CAPITULO_DO_LIVRO) + "', "
-                    + "ano_trabalho='" + ANO + "', "
-                    + "livro_nro_volumes='" + Utils.strFormat(NUMERO_DE_VOLUMES) + "', "
-                    + "livro_nro_serie='" + Utils.strFormat(NUMERO_DA_SERIE) + "', "
-                    + "livro_titulo='" + Utils.strFormat(TITULO_DO_LIVRO) + "', "
+                    + "capitulo_tipo='" + CAPITULO_TIPO + "', "
+                    + "titulo='" + Utils.strFormat(TITULO) + "', "
+                    + "ano_trabalho='" + ANO_TRABALHO + "', "
+                    + "livro_nro_volumes='" + Utils.strFormat(LIVRO_NRO_VOLUMES) + "', "
+                    + "livro_nro_serie='" + Utils.strFormat(LIVRO_NRO_SERIE) + "', "
+                    + "livro_titulo='" + Utils.strFormat(LIVRO_TITULO) + "', "
                     + "isbn='" + ISBN + "', "
                     + "autores='" + Utils.strFormat(AUTORES) + "', "
-                    + "pagina_inicio='" + PAGINA_INICIAL + "', "
-                    + "pagina_fim='" + PAGINA_FINAL + "',"
-                    + "nome_editora='" + Utils.strFormat(NOME_DA_EDITORA) + "',"
+                    + "pagina_inicio='" + PAGINA_INICIO + "', "
+                    + "pagina_fim='" + PAGINA_FIM + "',"
+                    + "nome_editora='" + Utils.strFormat(NOME_EDITORA) + "',"
                     + "updated_at=now()"
                     + "   where id = " + id;
 
@@ -93,7 +89,7 @@ public class CapituloELivro {
 
             sql = "select fk_curriculo from teste.capitulos_autores "
                     + "where fk_capitulo = '" + id + "'"
-                    + "     and fk_curriculo = '" + cur.getNUMERO_IDENTIFICADOR()+ "'";
+                    + "     and fk_curriculo = '" + cur.getId()+ "'";
             rs = stmt.executeQuery(sql);
 
 

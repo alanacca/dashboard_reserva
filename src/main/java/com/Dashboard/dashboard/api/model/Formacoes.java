@@ -13,7 +13,7 @@ import java.sql.Statement;
 @Entity
 @Table(schema = "teste", name="formacoes")
 @SequenceGenerator(name = "teste.formacoes_id_seq", sequenceName = "teste.formacoes_id_seq", allocationSize = 1)
-public class Formacao {
+public class Formacoes {
     @Id
     @Column(name="id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "teste.formacoes_id_seq")
@@ -33,11 +33,11 @@ public class Formacao {
     private String carga_horaria;
 
     @ManyToOne
-    private Curriculo cur;
+    private Curriculos cur;
 
 
-    public void persist(Connection connection, Curriculo cur) throws SQLException {
-        String sql = "select id from teste.formacoes where fk_curriculo = '" + cur.getNUMERO_IDENTIFICADOR()+ "' "
+    public void persist(Connection connection, Curriculos cur) throws SQLException {
+        String sql = "select id from teste.formacoes where fk_curriculo = '" + cur.getId()+ "' "
                 + "and titulo_trabalho = '" + Utils.strFormat(titulo_trabalho) + "'";
 
         Statement stmt = connection.createStatement();
@@ -45,7 +45,7 @@ public class Formacao {
         //checa se a produÃ§Ã£o jÃ¡ existe
         if (rs.next()) {
 
-            sql = "delete from teste.formacoes where fk_curriculo = '" + cur.getNUMERO_IDENTIFICADOR() + "' "
+            sql = "delete from teste.formacoes where fk_curriculo = '" + cur.getId() + "' "
                     + "and titulo_trabalho = '" + Utils.strFormat(titulo_trabalho) + "'";
             stmt.executeUpdate(sql);
         }

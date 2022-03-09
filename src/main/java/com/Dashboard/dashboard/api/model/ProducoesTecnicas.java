@@ -13,7 +13,7 @@ import java.sql.Statement;
 @Entity
 @Table(schema = "teste", name="producoes_tecnicas")
 @SequenceGenerator(name = "teste.producoes_tecnicas_id_seq", sequenceName = "teste.producoes_tecnicas_id_seq", allocationSize = 1)
-public class Tecnica {
+public class ProducoesTecnicas {
     @Id
     @Column(name="id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "teste.producoes_tecnicas_id_seq")
@@ -27,7 +27,7 @@ public class Tecnica {
     private String outras_informacoes="";
     private String autores = "";
 
-    public void persist(Connection connection, Curriculo cur) throws SQLException {
+    public void persist(Connection connection, Curriculos cur) throws SQLException {
         String sql = "select id from teste.producoes_tecnicas where lower(titulo) = lower('" + Utils.strFormat(titulo) + "')";
         Statement stmt = connection.createStatement();
 
@@ -51,7 +51,7 @@ public class Tecnica {
                 System.out.println("erro:" + sql);
             }
             sql = "insert into teste.autores_prod_tecnicas(fk_curriculo,fk_producao_tecnica)"
-                    + "values ('" + cur.getNUMERO_IDENTIFICADOR() + "',"
+                    + "values ('" + cur.getId() + "',"
                     + "        (select max(id) from teste.producoes_tecnicas) )";
             stmt.executeUpdate(sql);
 
@@ -73,7 +73,7 @@ public class Tecnica {
 
             sql = "select fk_curriculo from teste.autores_prod_tecnicas "
                     + "where fk_producao_tecnica = '" + id + "'"
-                    + "     and fk_curriculo = '" + cur.getNUMERO_IDENTIFICADOR() + "'";
+                    + "     and fk_curriculo = '" + cur.getId() + "'";
             rs = stmt.executeQuery(sql);
 
 
@@ -81,7 +81,7 @@ public class Tecnica {
             //se nÃ£o estiver associada, inclui
             if (!rs.next()) {
                 sql = "insert into teste.autores_prod_tecnicas(fk_curriculo,fk_producao_tecnica,created_at)"
-                        + "values ('" + cur.getNUMERO_IDENTIFICADOR() + "',"
+                        + "values ('" + cur.getId() + "',"
                         + "'"+ id + "',now())";
                 stmt.executeUpdate(sql);
             }
