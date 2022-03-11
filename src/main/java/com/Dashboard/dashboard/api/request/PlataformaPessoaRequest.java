@@ -4,7 +4,7 @@ package com.Dashboard.dashboard.api.request;
 import com.Dashboard.dashboard.api.model.Pessoas;
 
 public class PlataformaPessoaRequest {
-    public String idPlataforma;
+    public Long idPlataforma;
 
     public Integer fkPlataforma;
 

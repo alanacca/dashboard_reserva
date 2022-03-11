@@ -1,6 +1,7 @@
 package com.Dashboard.dashboard.api.repository.custom;
 
-import com.Dashboard.dashboard.api.model.CapitulosAutores;
+import com.Dashboard.dashboard.api.model.ArtigoEventoAutores;
+import com.Dashboard.dashboard.api.model.PeriodicosAutores;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -13,25 +14,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DashBoardImpl implements DashBoardQuery{
+public class PeriodicosQueryImpl implements PeriodicosQuery {
     @PersistenceContext
     private EntityManager entityManager;
 
     @Override
-    public Page<CapitulosAutores> capitulosPaginado(Long fk_curriculo, Pageable pageable){
-        List<CapitulosAutores> capitulosAutores = capitulosFiltro(fk_curriculo,pageable);
-        Long total = capitulosFiltroTotal(fk_curriculo,pageable);
-        return new PageImpl<>(capitulosAutores,pageable,total);
+    public Page<PeriodicosAutores> periodicosFiltroPaginado(Long fk_curriculo, Pageable pageable){
+        List<PeriodicosAutores> periodicosAutores = periodicosFiltro(fk_curriculo,pageable);
+        Long total = periodicosFiltroTotal(fk_curriculo,pageable);
+        return new PageImpl<>(periodicosAutores,pageable,total);
     }
 
-    public List<CapitulosAutores> capitulosFiltro(Long fk_curriculo, Pageable pageable){
+    public List<PeriodicosAutores> periodicosFiltro(Long fk_curriculo, Pageable pageable){
         StringBuilder hql = new StringBuilder();
 
-        hql.append("select c from CapitulosAutores c where 1=1 ");
+        hql.append("select c from PeriodicosAutores c where 1=1 ");
         HashMap<String,Object> param = getFiltro(hql, fk_curriculo);
-        hql.append("order by c.fkCapitulo.ANO_TRABALHO");
+        hql.append(" order by c.fkPeriodicos.ANO_DO_ARTIGO desc");
 
-        TypedQuery<CapitulosAutores> query = entityManager.createQuery(hql.toString(), CapitulosAutores.class);
+        TypedQuery<PeriodicosAutores> query = entityManager.createQuery(hql.toString(), PeriodicosAutores.class);
 
         for (Map.Entry<String, Object> value : param.entrySet()) {
             query.setParameter(value.getKey(), value.getValue());
@@ -43,10 +44,10 @@ public class DashBoardImpl implements DashBoardQuery{
 
     }
 
-    public Long capitulosFiltroTotal(Long fk_curriculo, Pageable pageable){
+    public Long periodicosFiltroTotal(Long fk_curriculo, Pageable pageable){
         StringBuilder hql = new StringBuilder();
 
-        hql.append("select count(c) from CapitulosAutores c where 1=1");
+        hql.append("select count(c) from PeriodicosAutores c where 1=1 ");
         HashMap<String,Object> param = getFiltro(hql,fk_curriculo);
 
         Query query = entityManager.createQuery(hql.toString());

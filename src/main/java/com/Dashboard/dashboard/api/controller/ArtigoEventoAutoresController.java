@@ -4,6 +4,11 @@ import com.Dashboard.dashboard.api.model.ArtigoEventoAutores;
 import com.Dashboard.dashboard.api.model.Curriculos;
 import com.Dashboard.dashboard.api.service.ArtigoEventoAutoresService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,9 +23,10 @@ public class ArtigoEventoAutoresController {
     @Autowired
     ArtigoEventoAutoresService service;
 
-    @GetMapping("/listar/{fkCurriculo}")
-    public List<ArtigoEventoAutores> findAllByCurriculo(@PathVariable Long fkCurriculo){
-        return this.service.findAllByCurriculo(fkCurriculo);
+    @GetMapping("/listar")
+    public Page<ArtigoEventoAutores> findAllByCurriculo(@PageableDefault(size=5) @SortDefault(sort = "id",direction = Sort.Direction.ASC) Pageable pageable
+            , Long fkCurriculo){
+        return this.service.findArtigosFiltro(fkCurriculo,pageable);
     }
 
     @GetMapping("/contar/{fkCurriculo}")

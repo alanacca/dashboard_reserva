@@ -16,7 +16,7 @@ public class Plataforma_Pessoa {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "teste.plataforma_pessoa_seq")
     private Integer id;
 
-    private String idPlataforma;
+    private Long idPlataforma;
 
     @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name="fk_plataforma")

@@ -27,7 +27,7 @@ public class CapitulosAutoresService {
     }
 
     public Page<CapitulosAutores> findCapitulosFiltro(Long fkCurriculo, Pageable pageable){
-        return this.repo.capitulosPaginado(fkCurriculo,pageable);
+        return this.repo.capitulosFiltroPaginado(fkCurriculo,pageable);
     }
 
 

@@ -1,13 +1,14 @@
 package com.Dashboard.dashboard.api.repository;
 
 import com.Dashboard.dashboard.api.model.PeriodicosAutores;
+import com.Dashboard.dashboard.api.repository.custom.PeriodicosQuery;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface PeriodicosAutoresRepository extends JpaRepository<PeriodicosAutores,Integer> {
+public interface PeriodicosAutoresRepository extends JpaRepository<PeriodicosAutores,Integer>, PeriodicosQuery {
 
     @Query("select p from PeriodicosAutores p where p.curriculo.id = :fkCurriculo")
     List<PeriodicosAutores> getByCurriculo(@Param("fkCurriculo") Long fkCurriculo);

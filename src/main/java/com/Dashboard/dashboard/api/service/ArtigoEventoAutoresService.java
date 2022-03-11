@@ -1,11 +1,14 @@
 package com.Dashboard.dashboard.api.service;
 
 import com.Dashboard.dashboard.api.model.ArtigoEventoAutores;
+import com.Dashboard.dashboard.api.model.CapitulosAutores;
 import com.Dashboard.dashboard.api.model.Curriculos;
 import com.Dashboard.dashboard.api.repository.ArtigoEventoAutoresRepository;
 import com.Dashboard.dashboard.api.repository.CurriculosRepository;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -27,4 +30,7 @@ public class ArtigoEventoAutoresService {
         return this.repo.countArtigoEvento(fkCurriculo);
     }
 
+    public Page<ArtigoEventoAutores> findArtigosFiltro(Long fkCurriculo, Pageable pageable){
+        return this.repo.artigosFiltroPaginado(fkCurriculo,pageable);
+    }
 }
