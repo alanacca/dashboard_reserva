@@ -5,6 +5,8 @@ import com.Dashboard.dashboard.api.model.CapitulosAutores;
 import com.Dashboard.dashboard.api.repository.CapitulosAutoresRepository;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +24,10 @@ public class CapitulosAutoresService {
 
     public Integer countCapitulosAutores(Long fkCurriculo){
         return this.repo.countCapitulosAutores(fkCurriculo);
+    }
+
+    public Page<CapitulosAutores> findCapitulosFiltro(Long fkCurriculo, Pageable pageable){
+        return this.repo.capitulosPaginado(fkCurriculo,pageable);
     }
 
 
