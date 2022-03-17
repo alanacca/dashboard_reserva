@@ -2,8 +2,11 @@ package com.Dashboard.dashboard.api.controller;
 
 import com.Dashboard.dashboard.api.event.RecursoCriadoEvent;
 import com.Dashboard.dashboard.api.model.Pessoas;
-import com.Dashboard.dashboard.api.model.PessoasVinculo;
+import com.Dashboard.dashboard.api.model.Pessoas_Vinculo;
+import com.Dashboard.dashboard.api.model.Plataforma_Pessoa;
+import com.Dashboard.dashboard.api.model.Vinculo;
 import com.Dashboard.dashboard.api.request.PessoasVinculoRequest;
+import com.Dashboard.dashboard.api.request.VinculoRequest;
 import com.Dashboard.dashboard.api.service.PessoasVinculoService;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
@@ -27,24 +30,38 @@ public class PessoasVinculoController {
     }
 
     @GetMapping("/listar")
-    public List<PessoasVinculo> listar(){
+    public List<Pessoas_Vinculo> listar(){
         return this.service.findAll();
     }
 
     @GetMapping("/vinculo/{idVinculo}")
-    public List<Pessoas> listarEspecifico(@PathVariable Integer idVinculo){
+    public List<Plataforma_Pessoa> listarEspecifico(@PathVariable Integer idVinculo){
+        return this.service.getSemVinculoPorVinculo(idVinculo);
+    }
 
-        List<Pessoas> pessoas = this.service.getSemVinculoPorVinculo(idVinculo);
-        return pessoas;
+    @GetMapping("/verificar/{idVinculo}")
+    public ResponseEntity<List<Pessoas_Vinculo>> verificarLista(@Valid @RequestBody List<Plataforma_Pessoa> pessoas,
+                                                @PathVariable("idVinculo") Integer idVinculo){
+        return new ResponseEntity<>(this.service.verificacaoLista(pessoas,idVinculo),HttpStatus.OK);
+
+    }
+
+    @GetMapping("/{idVinculo}")
+    public List<Plataforma_Pessoa> listarByVinculo(@PathVariable Integer idVinculo){
+        return this.service.getByVinculo(idVinculo);
     }
 
     @PostMapping
-    public ResponseEntity<PessoasVinculo> novo(@Valid @RequestBody PessoasVinculoRequest request,
-                                               HttpServletResponse response
+    public ResponseEntity<Pessoas_Vinculo> novo(@Valid @RequestBody PessoasVinculoRequest request,
+                                        HttpServletResponse response
     ){
-        PessoasVinculo pessoaVinculoSalva = this.service.salvarPessoasVinculoByRequest(request);
+        Pessoas_Vinculo pessoaVinculoSalva = this.service.salvarPessoasVinculoByRequest(request);
         publisher.publishEvent(new RecursoCriadoEvent(this, response, pessoaVinculoSalva.getId()));
         return ResponseEntity.status(HttpStatus.CREATED).body(pessoaVinculoSalva);
 
     }
+
+
+
+
 }

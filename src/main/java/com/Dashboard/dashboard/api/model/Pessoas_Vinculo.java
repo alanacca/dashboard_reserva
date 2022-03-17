@@ -8,11 +8,11 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(schema = "teste", name="pessoas_vinculo")
-@SequenceGenerator(name = "teste.pessoa_vinculo_id_seq", sequenceName = "teste.pessoa_vinculo_id_seq", allocationSize = 1)
-public class PessoasVinculo {
+@SequenceGenerator(name = "teste.pessoas_vinculo_id_seq", sequenceName = "teste.pessoas_vinculo_id_seq", allocationSize = 1)
+public class Pessoas_Vinculo {
     @Id
     @Column(name="id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "teste.pessoa_vinculo_id_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "teste.pessoas_vinculo_id_seq")
     private Integer id;
 
     @OneToOne(cascade = CascadeType.MERGE)
@@ -23,13 +23,13 @@ public class PessoasVinculo {
     @JoinColumn(name="vinculo")
     private Vinculo vinculo;
 
-    public PessoasVinculo(){
+    public Pessoas_Vinculo(){
 
     }
 
-    public PessoasVinculo(Integer id){this.id = id;}
+    public Pessoas_Vinculo(Integer id){this.id = id;}
 
-    public PessoasVinculo(PessoasVinculoRequest vinculoPessoaRequest){
+    public Pessoas_Vinculo(PessoasVinculoRequest vinculoPessoaRequest){
         this.fk_pessoa = new Pessoas(vinculoPessoaRequest.fk_pessoa);
         this.vinculo = new Vinculo(vinculoPessoaRequest.vinculoId);
     }

@@ -8,6 +8,22 @@ public class PessoasVinculoRequest {
 
     public Integer vinculoId;
 
+    public Integer getFk_pessoa() {
+        return fk_pessoa;
+    }
+
+    public void setFk_pessoa(Integer fk_pessoa) {
+        this.fk_pessoa = fk_pessoa;
+    }
+
+    public Integer getVinculoId() {
+        return vinculoId;
+    }
+
+    public void setVinculoId(Integer vinculoId) {
+        this.vinculoId = vinculoId;
+    }
+
     @Override
     public String toString(){
         return "PessoasVinculoRequest [fk_pessoa="+ fk_pessoa +

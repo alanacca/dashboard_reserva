@@ -11,4 +11,6 @@ public interface PlataformaPessoaRepository extends JpaRepository<Plataforma_Pes
     @Query(value = "select * from teste.Plataforma_Pessoa p where p.fk_plataforma = :fkPlataforma and p.fk_pessoa = :fkPessoa", nativeQuery = true)
     Plataforma_Pessoa findByFkPlataformaAndFkPessoa(@Param("fkPlataforma") Integer fkPlataforma, @Param("fkPessoa") Integer fkPessoa);
 
+    @Query(value = "select * from teste.Plataforma_Pessoa p where p.fk_pessoa = :fkPessoa", nativeQuery = true)
+    Plataforma_Pessoa findByFkPessoa(@Param("fkPessoa") Integer fkPessoa);
 }
