@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 @Service
 public class PessoasVinculoService {
@@ -30,18 +31,31 @@ public class PessoasVinculoService {
         return this.repo.save(pessoas_vinculo);
     }
 
-    public List<Pessoas_Vinculo> verificacaoLista(List<Plataforma_Pessoa> pessoas, Integer idVinculo){
-        List<Pessoas_Vinculo> pessoas_vinculos = this.repo.findAll();
-
+    public List<PessoasVinculoRequest> verificacaoListaSalvar(List<Plataforma_Pessoa> pessoas, Integer idVinculo){
+        List<Integer> pessoas_vinculos = this.repo.findAllFkPessoa();
+        List<PessoasVinculoRequest> pessoasSalvas = new ArrayList<>();
         pessoas.stream().forEach( pessoa ->{
-            if(!pessoas_vinculos.contains(pessoa)){
+            if(!pessoas_vinculos.contains(pessoa.getFkPessoa().getIdPessoa())){
                 PessoasVinculoRequest pessoasVinculoRequest = new PessoasVinculoRequest();
                 pessoasVinculoRequest.setFk_pessoa(pessoa.getFkPessoa().getIdPessoa());
                 pessoasVinculoRequest.setVinculoId(idVinculo);
-                this.salvarPessoasVinculoByRequest(pessoasVinculoRequest);
+                pessoasSalvas.add(pessoasVinculoRequest);
             }
         });
-        return this.repo.findAll();
+        return pessoasSalvas;
+    }
+
+    public void verificacaoListaExcluir(List<Plataforma_Pessoa> pessoas, Integer idVinculo) {
+        List<Integer> pessoas_vinculos = this.repo.findAllFkPessoa();
+        List<Integer> pessoasIds = new ArrayList<>();
+        pessoas.stream().forEach(pessoa->{
+            pessoasIds.add(pessoa.getFkPessoa().getIdPessoa());
+        });
+        for(Integer item:pessoas_vinculos) {
+            if (!pessoasIds.contains(item)) {
+                this.repo.deleteByFkPessoa(item);
+            }
+        }
     }
 
     public List<Pessoas_Vinculo> findAll(){

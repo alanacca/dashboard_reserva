@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -39,11 +40,31 @@ public class PessoasVinculoController {
         return this.service.getSemVinculoPorVinculo(idVinculo);
     }
 
-    @GetMapping("/verificar/{idVinculo}")
-    public ResponseEntity<List<Pessoas_Vinculo>> verificarLista(@Valid @RequestBody List<Plataforma_Pessoa> pessoas,
-                                                @PathVariable("idVinculo") Integer idVinculo){
-        return new ResponseEntity<>(this.service.verificacaoLista(pessoas,idVinculo),HttpStatus.OK);
+    @PostMapping("/verificar/{idVinculo}")
+    @ResponseBody
+    public ResponseEntity<List<Pessoas_Vinculo>> salvarLista(@PathVariable("idVinculo") Integer idVinculo,
+                                                                @RequestBody List<Plataforma_Pessoa> pessoas,
+                                                                HttpServletResponse response){
+        List<Pessoas_Vinculo> pessoasVinculos = new ArrayList<>();
+        List<PessoasVinculoRequest> pessoasVinculoRequests = this.service.verificacaoListaSalvar(pessoas,idVinculo);
+        pessoasVinculoRequests.stream().forEach( pessoasSalvar ->{
+            Pessoas_Vinculo pessoaVinculoSalva = this.service.salvarPessoasVinculoByRequest(pessoasSalvar);
+            publisher.publishEvent(new RecursoCriadoEvent(this, response, pessoaVinculoSalva.getId()));;
+            pessoasVinculos.add(pessoaVinculoSalva);
+        });
+        this.service.verificacaoListaExcluir(pessoas,idVinculo);
+        return new ResponseEntity<>(pessoasVinculos,HttpStatus.OK);
 
+//        return new ResponseEntity<>(this.service.verificacaoLista(pessoas,idVinculo),HttpStatus.OK);
+
+    }
+    @DeleteMapping("/deletar/{idVinculo}")
+    @ResponseStatus(value = HttpStatus.OK)
+    public ResponseEntity<Void> excluirLista(@PathVariable("idVinculo") Integer idVinculo,
+                                                              @RequestBody List<Plataforma_Pessoa> pessoas,
+                                                              HttpServletResponse response){
+        this.service.verificacaoListaExcluir(pessoas,idVinculo);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{idVinculo}")

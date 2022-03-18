@@ -15,4 +15,12 @@ public interface PessoasVinculoRepository extends JpaRepository<Pessoas_Vinculo,
 
     @Query(value = "select fk_pessoa from teste.pessoas_vinculo where vinculo = :idVinculo", nativeQuery = true)
     List<Integer> getbyVinculo(@Param("idVinculo") Integer idVinculo);
+
+    @Query(value = "select fk_pessoa from teste.pessoas_vinculo", nativeQuery = true)
+    List<Integer> findAllFkPessoa();
+
+    @Query(value = "delete from teste.pessoas_vinculos where fk_pessoa = :fkPessoa",nativeQuery = true)
+    void deleteByFkPessoa(@Param("fkPessoa") Integer fkPessoa);
+
+
 }
