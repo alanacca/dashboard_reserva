@@ -52,18 +52,15 @@ public class PessoasVinculoController {
             publisher.publishEvent(new RecursoCriadoEvent(this, response, pessoaVinculoSalva.getId()));;
             pessoasVinculos.add(pessoaVinculoSalva);
         });
-        this.service.verificacaoListaExcluir(pessoas,idVinculo);
         return new ResponseEntity<>(pessoasVinculos,HttpStatus.OK);
 
 //        return new ResponseEntity<>(this.service.verificacaoLista(pessoas,idVinculo),HttpStatus.OK);
 
     }
-    @DeleteMapping("/deletar/{idVinculo}")
+    @DeleteMapping("/deletar/{fkPessoa}")
     @ResponseStatus(value = HttpStatus.OK)
-    public ResponseEntity<Void> excluirLista(@PathVariable("idVinculo") Integer idVinculo,
-                                                              @RequestBody List<Plataforma_Pessoa> pessoas,
-                                                              HttpServletResponse response){
-        this.service.verificacaoListaExcluir(pessoas,idVinculo);
+    public ResponseEntity<Void> excluirLista(@PathVariable Integer fkPessoa){
+        this.service.verificacaoListaExcluir(fkPessoa);
         return ResponseEntity.noContent().build();
     }
 

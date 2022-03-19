@@ -45,17 +45,18 @@ public class PessoasVinculoService {
         return pessoasSalvas;
     }
 
-    public void verificacaoListaExcluir(List<Plataforma_Pessoa> pessoas, Integer idVinculo) {
-        List<Integer> pessoas_vinculos = this.repo.findAllFkPessoa();
-        List<Integer> pessoasIds = new ArrayList<>();
-        pessoas.stream().forEach(pessoa->{
-            pessoasIds.add(pessoa.getFkPessoa().getIdPessoa());
-        });
-        for(Integer item:pessoas_vinculos) {
-            if (!pessoasIds.contains(item)) {
-                this.repo.deleteByFkPessoa(item);
-            }
-        }
+    public void verificacaoListaExcluir(Integer fkPessoa) {
+        this.repo.deleteByFkPessoa(fkPessoa);
+//        List<Integer> pessoas_vinculos = this.repo.findAllFkPessoa();
+//        List<Integer> pessoasIds = new ArrayList<>();
+//        pessoas.stream().forEach(pessoa->{
+//            pessoasIds.add(pessoa.getFkPessoa().getIdPessoa());
+//        });
+//        for(Integer item:pessoas_vinculos) {
+//            if (!pessoasIds.contains(item)) {
+//                this.repo.deleteByFkPessoa(item);
+//            }
+//        }
     }
 
     public List<Pessoas_Vinculo> findAll(){
