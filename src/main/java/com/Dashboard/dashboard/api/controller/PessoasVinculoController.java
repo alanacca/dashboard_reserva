@@ -61,9 +61,11 @@ public class PessoasVinculoController {
     @ResponseStatus(value = HttpStatus.OK)
     public ResponseEntity<Void> excluirLista(@PathVariable Integer fkPessoa){
         if(this.service.checaExistencia(fkPessoa)){
+            System.out.println("das");
             this.service.verificacaoListaExcluir(fkPessoa);
             return ResponseEntity.noContent().build();
         }else{
+            System.out.println("des");
             return ResponseEntity.notFound().build();
         }
 
@@ -73,6 +75,8 @@ public class PessoasVinculoController {
     public Boolean checar(@PathVariable Integer fkPessoa){
         if(this.service.checaExistencia(fkPessoa)){
             return true;
+        }else{
+            return false;
         }
     }
 
