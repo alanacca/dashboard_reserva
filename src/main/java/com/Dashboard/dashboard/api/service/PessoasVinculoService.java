@@ -11,6 +11,7 @@ import com.Dashboard.dashboard.api.request.PessoasVinculoRequest;
 import com.Dashboard.dashboard.api.request.VinculoRequest;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -45,8 +46,17 @@ public class PessoasVinculoService {
         return pessoasSalvas;
     }
 
+    public boolean checaExistencia(Integer fkPessoa){
+        List<Pessoas_Vinculo> verificacao = this.repo.existsByFkPessoa(fkPessoa);
+        if(!verificacao.isEmpty()) {
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     public void verificacaoListaExcluir(Integer fkPessoa) {
-        this.repo.deleteByFkPessoa(fkPessoa);
+            this.repo.deleteByFkPessoa(fkPessoa);
 //        List<Integer> pessoas_vinculos = this.repo.findAllFkPessoa();
 //        List<Integer> pessoasIds = new ArrayList<>();
 //        pessoas.stream().forEach(pessoa->{

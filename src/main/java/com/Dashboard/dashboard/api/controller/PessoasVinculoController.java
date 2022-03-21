@@ -60,8 +60,20 @@ public class PessoasVinculoController {
     @DeleteMapping("/deletar/{fkPessoa}")
     @ResponseStatus(value = HttpStatus.OK)
     public ResponseEntity<Void> excluirLista(@PathVariable Integer fkPessoa){
-        this.service.verificacaoListaExcluir(fkPessoa);
-        return ResponseEntity.noContent().build();
+        if(this.service.checaExistencia(fkPessoa)){
+            this.service.verificacaoListaExcluir(fkPessoa);
+            return ResponseEntity.noContent().build();
+        }else{
+            return ResponseEntity.notFound().build();
+        }
+
+    }
+
+    @GetMapping("checarExistencia/{fkPessoa}")
+    public Boolean checar(@PathVariable Integer fkPessoa){
+        if(this.service.checaExistencia(fkPessoa)){
+            return true;
+        }
     }
 
     @GetMapping("/{idVinculo}")
