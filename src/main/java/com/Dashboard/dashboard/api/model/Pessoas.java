@@ -39,8 +39,11 @@ public class Pessoas {
         this.doutorado = request.doutorado;
     }
 
-    public Pessoas(String nomeComp){
-        this.nomeCompleto = nomeComp;
+    public Pessoas(Pessoas pessoa){
+
+        this.nomeCompleto = pessoa.nomeCompleto;
+        this.mestrado = pessoa.mestrado;
+        this.doutorado = pessoa.doutorado;
     }
 }
 

@@ -4,10 +4,12 @@ import com.Dashboard.dashboard.api.event.RecursoCriadoEvent;
 import com.Dashboard.dashboard.api.model.Pessoas;
 import com.Dashboard.dashboard.api.request.PessoasRequest;
 import com.Dashboard.dashboard.api.service.PessoasService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -42,5 +44,11 @@ public class PessoasController {
         Pessoas pessoasSalvo = this.pessoasService.salvarPessoaByPessoaRequest(pessoasRequest);
         publisher.publishEvent(new RecursoCriadoEvent(this,response,pessoasSalvo.getIdPessoa()));
         return ResponseEntity.status(HttpStatus.CREATED).body(pessoasSalvo);
+    }
+
+    @PatchMapping("/")
+    public ResponseEntity<List<Pessoas>> atualizar(@RequestBody List<Pessoas> pessoas){
+        List<Pessoas> pessoasList = this.pessoasService.atualizarPessoas(pessoas);
+        return ResponseEntity.ok(pessoasList);
     }
 }

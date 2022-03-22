@@ -59,6 +59,7 @@ public class CapitulosQueryImpl implements CapitulosQuery {
 
     public HashMap<String,Object> getFiltro(StringBuilder hql, Long fk_curriculo){
         HashMap<String,Object> param = new HashMap<>();
+        System.out.println(fk_curriculo);
 
         if(fk_curriculo != null){
             hql.append("and c.curriculo.id = :fkCurriculo");

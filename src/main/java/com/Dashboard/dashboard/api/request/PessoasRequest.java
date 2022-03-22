@@ -7,6 +7,18 @@ public class PessoasRequest {
 
     public Boolean doutorado;
 
+    public void setNome_Completo(String nome_Completo) {
+        Nome_Completo = nome_Completo;
+    }
+
+    public void setMestrado(Boolean mestrado) {
+        this.mestrado = mestrado;
+    }
+
+    public void setDoutorado(Boolean doutorado) {
+        this.doutorado = doutorado;
+    }
+
     @Override
     public String toString() {
         return "PessoasRequest{" +

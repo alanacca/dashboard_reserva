@@ -24,9 +24,9 @@ public class PeriodicosAutoresController {
     @Autowired
     PeriodicosAutoresService service;
 
-    @GetMapping("/listar")
+    @GetMapping("/listar/{fkCurriculo}")
     public Page<PeriodicosAutores> findAllByCurriculo(@PageableDefault(size=5) @SortDefault(sort = "id",direction = Sort.Direction.ASC) Pageable pageable,
-                                                      Long fkCurriculo){
+                                                      @PathVariable Long fkCurriculo){
         return this.service.findPeriodicosFiltro(fkCurriculo,pageable);
     }
 
