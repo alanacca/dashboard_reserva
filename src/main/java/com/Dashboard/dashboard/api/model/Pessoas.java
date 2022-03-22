@@ -19,6 +19,12 @@ public class Pessoas {
     @Column(name="nome_completo")
     private String nomeCompleto;
 
+    @Column(name="mestrado")
+    private Boolean mestrado;
+
+    @Column(name="doutorado")
+    private Boolean doutorado;
+
     public Pessoas(){
 
     }
@@ -29,6 +35,8 @@ public class Pessoas {
 
     public Pessoas(PessoasRequest request){
         this.nomeCompleto = request.Nome_Completo;
+        this.mestrado = request.mestrado;
+        this.doutorado = request.doutorado;
     }
 
     public Pessoas(String nomeComp){
