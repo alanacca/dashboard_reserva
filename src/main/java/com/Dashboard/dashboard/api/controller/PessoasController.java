@@ -34,6 +34,11 @@ public class PessoasController {
 //    @GetMapping("/verificaId/{id}")
 //    public boolean existsByIdPlataforma(@PathVariable String id){return pessoasService.existsByIdPlataforma(id);}
 
+    @GetMapping("/findMestrado")
+    public List<Pessoas> getMestrado(){
+        return this.pessoasService.findByMestrado();
+    }
+
     @GetMapping("/listar")
     public List<Pessoas> listar(){
         return pessoasService.findAll();

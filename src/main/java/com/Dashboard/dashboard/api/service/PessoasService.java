@@ -30,9 +30,11 @@ public class PessoasService {
         return this.pessoasRepository.findAll();
     }
 
-    public Optional<Pessoas> findByNome(Integer id){return this.pessoasRepository.findById(id);}
+    public List<Pessoas> findByMestrado(){
+        return this.pessoasRepository.getByMestrado(true);
+    }
 
-//    public boolean existsByIdPlataforma(String IdPlataforma){ return this.pessoasRepository.existsByIdPlataforma(IdPlataforma);}
+//    public Optional<Pessoas> findByNome(Integer id){return this.pessoasRepository.findById(id);}
 
     public boolean existsBynomeCompleto(String nomeCompleto){ return this.pessoasRepository.existsBynomeCompleto(nomeCompleto);}
 

@@ -12,12 +12,12 @@ public interface PessoasRepository extends JpaRepository<Pessoas, Integer> {
 
     @Override
     Optional<Pessoas> findById(Integer id);
-//
-//    Optional<Pessoas> findByIdPlataforma(String idPlataforma);
-//
-//    Optional<Pessoas> findBynomeCompleto(String nomeCompleto);
-//
-//    boolean existsByIdPlataforma(String idPlataforma);
+
+//    @Query(value = "select pe from Pessoas pe where mestrado = true",nativeQuery = false)
+//    List<Pessoas> getByMes
+
+    List<Pessoas> getByMestrado(boolean mestrado);
+
     @Query(value = "select pe.id_pessoa from teste.pessoas pe where pe.nome_completo = :nomeCompleto",nativeQuery = true)
     Integer findByNomeCompleto(@Param("nomeCompleto")String nomeCompleto);
 
