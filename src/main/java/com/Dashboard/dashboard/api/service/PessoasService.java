@@ -27,7 +27,7 @@ public class PessoasService {
     }
 
     public List<Pessoas> findAll(){
-        return this.pessoasRepository.findAll();
+        return this.pessoasRepository.findAllOrderByNomeCompleto();
     }
 
     public List<Pessoas> findByMestrado(){

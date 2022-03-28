@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+import java.util.List;
+
 @RestController
 @RequestMapping("/curriculo")
 public class CurriculoController {
@@ -21,5 +24,12 @@ public class CurriculoController {
     public ResponseEntity<Curriculos> findByCurriculo(@PathVariable Long idCurriculo){
         Curriculos curriculo = this.service.findByCurriculo(idCurriculo);
         return new ResponseEntity<>(curriculo, HttpStatus.OK);
+    }
+
+    @GetMapping("estrato/{ano_inicio}/{ano_final}")
+    public ResponseEntity<List<HashMap<String,String>>> findEstratosCurriculo(@PathVariable("ano_inicio") Integer ano_inicio,
+                                                                              @PathVariable("ano_final") Integer ano_final){
+        List<HashMap<String,String>> estratosCurriculo = this.service.estratoCurriculo(ano_inicio,ano_final);
+        return new ResponseEntity<>(estratosCurriculo,HttpStatus.OK);
     }
 }

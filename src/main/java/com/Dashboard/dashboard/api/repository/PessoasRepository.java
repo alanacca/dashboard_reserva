@@ -13,6 +13,9 @@ public interface PessoasRepository extends JpaRepository<Pessoas, Integer> {
     @Override
     Optional<Pessoas> findById(Integer id);
 
+    @Query(value = "select * from teste.pessoas pe order by pe.nome_completo", nativeQuery = true)
+    List<Pessoas> findAllOrderByNomeCompleto();
+
 //    @Query(value = "select pe from Pessoas pe where mestrado = true",nativeQuery = false)
 //    List<Pessoas> getByMes
 
