@@ -32,4 +32,11 @@ public class CurriculoController {
         List<HashMap<String,String>> estratosCurriculo = this.service.estratoCurriculo(ano_inicio,ano_final);
         return new ResponseEntity<>(estratosCurriculo,HttpStatus.OK);
     }
+
+    @GetMapping("estrato_PPGCC/{ano_inicio}/{ano_final}")
+    public ResponseEntity<List<HashMap<String,String>>> findIndicePPGCC(@PathVariable("ano_inicio") Integer ano_inicio,
+                                                                              @PathVariable("ano_final") Integer ano_final){
+        List<HashMap<String,String>> estratosCurriculo = this.service.indicesPPGCC(ano_inicio,ano_final);
+        return new ResponseEntity<>(estratosCurriculo,HttpStatus.OK);
+    }
 }
