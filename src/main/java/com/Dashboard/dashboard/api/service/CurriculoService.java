@@ -74,7 +74,7 @@ public class CurriculoService {
                     }
                 });
 
-                Double iRestrito = this.countA1 * 1 + this.countA2 * 0.85 + this.countA3 * 0.725 + this.countA4 * 0.625;
+                Double iRestrito =  this.countA1 * 1 + this.countA2 * 0.85 + this.countA3 * 0.725 + this.countA4 * 0.625;
                 Double iNao_Restrito = this.countB1 * 0.5 + this.countB2 * 0.25 + this.countB3 * 0.1 + this.countB4 * 0.05;
                 Double iGeral = iRestrito + iNao_Restrito;
                 String nomeCompleto = this.repo.findNomeCompleto(idCurriculo);
