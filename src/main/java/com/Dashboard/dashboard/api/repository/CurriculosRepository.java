@@ -22,4 +22,9 @@ public interface CurriculosRepository extends JpaRepository<Curriculos,Integer> 
             "and pe.mestrado = 'true' order by cu.nome_completo", nativeQuery = true)
     List<Long> findAllIdMestrado();
 
+    @Query(value = "select cu.id from teste.curriculos cu inner join teste.pessoas pe \n" +
+            "on unaccent(pe.nome_completo) like unaccent(cu.nome_completo) \n" +
+            "and pe.doutorado = 'true' order by cu.nome_completo", nativeQuery = true)
+    List<Long> findAllIdDoutorado();
+
 }

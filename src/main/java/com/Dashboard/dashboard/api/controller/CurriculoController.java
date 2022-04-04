@@ -39,4 +39,18 @@ public class CurriculoController {
         List<HashMap<String,String>> estratosCurriculo = this.service.indicesPPGCC(ano_inicio,ano_final);
         return new ResponseEntity<>(estratosCurriculo,HttpStatus.OK);
     }
+
+    @GetMapping("estratoDoutorado/{ano_inicio}/{ano_final}")
+    public ResponseEntity<List<HashMap<String,String>>> findEstratosCurriculoDoutorado(@PathVariable("ano_inicio") Integer ano_inicio,
+                                                                              @PathVariable("ano_final") Integer ano_final){
+        List<HashMap<String,String>> estratosCurriculo = this.service.estratoCurriculoDoutorado(ano_inicio,ano_final);
+        return new ResponseEntity<>(estratosCurriculo,HttpStatus.OK);
+    }
+
+    @GetMapping("estrato_DCC/{ano_inicio}/{ano_final}")
+    public ResponseEntity<List<HashMap<String,String>>> findIndiceDCC(@PathVariable("ano_inicio") Integer ano_inicio,
+                                                                        @PathVariable("ano_final") Integer ano_final){
+        List<HashMap<String,String>> estratosCurriculo = this.service.indicesDCCMAPI(ano_inicio,ano_final);
+        return new ResponseEntity<>(estratosCurriculo,HttpStatus.OK);
+    }
 }
