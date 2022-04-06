@@ -223,7 +223,7 @@ public class CurriculoService {
             Double iRestrito = this.countA1Total * 1 + this.countA2Total * 0.85 + this.countA3Total * 0.725 + this.countA4Total * 0.625;
             Double iNao_Restrito = this.countB1Total * 0.5 + this.countB2Total * 0.25 + this.countB3Total * 0.1 + this.countB4Total * 0.05;
             Double iGeral = iRestrito + iNao_Restrito;
-            System.out.println("teste: "+iRestrito);
+//            System.out.println("teste: "+iRestrito);
             this.iRestritoTotal +=iRestrito;
             this.iGeralTotal +=iGeral;
             this.countA1Total = 0;
