@@ -194,30 +194,35 @@ public class CurriculoService {
     }
 
     public List<HashMap<String, String>> indicesDCCMAPI(Integer ano_inicio, Integer ano_final) {
+
+        List<String> periodicos= new ArrayList<>();
         List<HashMap<String, String>> listHash = new ArrayList<>();
         List<Long> curriculos = this.repo.findAllIdDoutorado();
 
         HashMap<String, String> list = new HashMap<>();
         curriculos.stream().forEach(idCurriculo -> {
             this.TotalDiscenteDoutorado++;
-            List<String> estratosCurriculo = this.qualisRepo.estratosCurriculo(idCurriculo, ano_inicio, ano_final);
-            estratosCurriculo.stream().forEach(estrato -> {
-                if (estrato.equalsIgnoreCase("A1")) {
-                    this.countA1Total++;
-                } else if (estrato.equalsIgnoreCase("A2")) {
-                    this.countA2Total++;
-                } else if (estrato.equalsIgnoreCase("A3")) {
-                    this.countA3Total++;
-                } else if (estrato.equalsIgnoreCase("A4")) {
-                    this.countA4Total++;
-                } else if (estrato.equalsIgnoreCase("B1")) {
-                    this.countB1Total++;
-                } else if (estrato.equalsIgnoreCase("B2")) {
-                    this.countB2Total++;
-                } else if (estrato.equalsIgnoreCase("B3")) {
-                    this.countB3Total++;
-                } else if (estrato.equalsIgnoreCase("B4")) {
-                    this.countB4Total++;
+            List<String> periodicosCurriculo = this.qualisRepo.periodicosCurriculo(idCurriculo,ano_inicio,ano_final);
+            periodicosCurriculo.stream().forEach(periodico ->{
+                if(!periodicos.contains(periodico)){
+                    periodicos.add(periodico);
+                    if(this.qualisRepo.estratoPeriodico(periodico).equalsIgnoreCase("A1")){
+                        this.countA1Total++;
+                    }else if(this.qualisRepo.estratoPeriodico(periodico).equalsIgnoreCase("A2")){
+                        this.countA2Total++;
+                    }else if(this.qualisRepo.estratoPeriodico(periodico).equalsIgnoreCase("A3")){
+                        this.countA3Total++;
+                    }else if(this.qualisRepo.estratoPeriodico(periodico).equalsIgnoreCase("A4")){
+                        this.countA4Total++;
+                    }else if(this.qualisRepo.estratoPeriodico(periodico).equalsIgnoreCase("B1")){
+                        this.countB1Total++;
+                    }else if(this.qualisRepo.estratoPeriodico(periodico).equalsIgnoreCase("B2")){
+                        this.countB2Total++;
+                    }else if(this.qualisRepo.estratoPeriodico(periodico).equalsIgnoreCase("B3")){
+                        this.countB3Total++;
+                    }else if(this.qualisRepo.estratoPeriodico(periodico).equalsIgnoreCase("B4")){
+                        this.countB4Total++;
+                    }
                 }
             });
             Double iRestrito = this.countA1Total * 1 + this.countA2Total * 0.85 + this.countA3Total * 0.725 + this.countA4Total * 0.625;
@@ -236,7 +241,7 @@ public class CurriculoService {
             this.countB4Total = 0;
 
         });
-
+        System.out.println(periodicos);
 
         list.put("iRestrito_DCC", String.format("%.2f", (iRestritoTotal/TotalDiscenteDoutorado)));
 //        list.put("iNao_Restrito_PPGCC", String.format("%.2f", iNao_Restrito));
