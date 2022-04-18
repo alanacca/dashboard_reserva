@@ -7,10 +7,7 @@ import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class CurriculoService {
@@ -40,6 +37,7 @@ public class CurriculoService {
     private Integer countB4Total = 0;
     private Double iGeralTotal = 0.0;
     private Double iRestritoTotal = 0.0;
+    private Double iNaoRestritoTotal = 0.0;
     private Integer TotalDiscenteDoutorado =0;
 
     public Curriculos findByCurriculo(Long idCurriculo) {
@@ -194,63 +192,83 @@ public class CurriculoService {
     }
 
     public List<HashMap<String, String>> indicesDCCMAPI(Integer ano_inicio, Integer ano_final) {
-
+        List<HashMap<String,String>> listHash = new ArrayList<>();
         List<String> periodicos= new ArrayList<>();
-        List<HashMap<String, String>> listHash = new ArrayList<>();
+        List<String> nomesTrabalhos = new ArrayList<>();
         List<Long> curriculos = this.repo.findAllIdDoutorado();
 
         HashMap<String, String> list = new HashMap<>();
         curriculos.stream().forEach(idCurriculo -> {
             this.TotalDiscenteDoutorado++;
-            List<String> periodicosCurriculo = this.qualisRepo.periodicosCurriculo(idCurriculo,ano_inicio,ano_final);
-            periodicosCurriculo.stream().forEach(periodico ->{
-                if(!periodicos.contains(periodico)){
-                    periodicos.add(periodico);
-                    if(this.qualisRepo.estratoPeriodico(periodico).equalsIgnoreCase("A1")){
+            HashMap<String,String> periodicosCurriculo = this.AuxIndiceDCCMAPI(this.qualisRepo.periodicosCurriculo(idCurriculo,ano_inicio,ano_final));
+            System.out.println(periodicosCurriculo);
+            for(Map.Entry<String, String> entry : periodicosCurriculo.entrySet()){
+                String key = entry.getKey();
+                String value = entry.getValue();
+
+                if(!nomesTrabalhos.contains(key)){
+                    periodicos.add(value);
+                    nomesTrabalhos.add(key);
+                    if(this.qualisRepo.estratoPeriodico(value).equalsIgnoreCase("A1")){
                         this.countA1Total++;
-                    }else if(this.qualisRepo.estratoPeriodico(periodico).equalsIgnoreCase("A2")){
+                    }else if(this.qualisRepo.estratoPeriodico(value).equalsIgnoreCase("A2")){
                         this.countA2Total++;
-                    }else if(this.qualisRepo.estratoPeriodico(periodico).equalsIgnoreCase("A3")){
+                    }else if(this.qualisRepo.estratoPeriodico(value).equalsIgnoreCase("A3")){
                         this.countA3Total++;
-                    }else if(this.qualisRepo.estratoPeriodico(periodico).equalsIgnoreCase("A4")){
+                    }else if(this.qualisRepo.estratoPeriodico(value).equalsIgnoreCase("A4")){
                         this.countA4Total++;
-                    }else if(this.qualisRepo.estratoPeriodico(periodico).equalsIgnoreCase("B1")){
+                    }else if(this.qualisRepo.estratoPeriodico(value).equalsIgnoreCase("B1")){
                         this.countB1Total++;
-                    }else if(this.qualisRepo.estratoPeriodico(periodico).equalsIgnoreCase("B2")){
+                    }else if(this.qualisRepo.estratoPeriodico(value).equalsIgnoreCase("B2")){
                         this.countB2Total++;
-                    }else if(this.qualisRepo.estratoPeriodico(periodico).equalsIgnoreCase("B3")){
+                    }else if(this.qualisRepo.estratoPeriodico(value).equalsIgnoreCase("B3")){
                         this.countB3Total++;
-                    }else if(this.qualisRepo.estratoPeriodico(periodico).equalsIgnoreCase("B4")){
+                    }else if(this.qualisRepo.estratoPeriodico(value).equalsIgnoreCase("B4")){
                         this.countB4Total++;
                     }
                 }
-            });
-            Double iRestrito = this.countA1Total * 1 + this.countA2Total * 0.85 + this.countA3Total * 0.725 + this.countA4Total * 0.625;
-            Double iNao_Restrito = this.countB1Total * 0.5 + this.countB2Total * 0.25 + this.countB3Total * 0.1 + this.countB4Total * 0.05;
-            Double iGeral = iRestrito + iNao_Restrito;
-//            System.out.println("teste: "+iRestrito);
-            this.iRestritoTotal +=iRestrito;
-            this.iGeralTotal +=iGeral;
-            this.countA1Total = 0;
-            this.countA2Total = 0;
-            this.countA3Total = 0;
-            this.countA4Total = 0;
-            this.countB1Total = 0;
-            this.countB2Total = 0;
-            this.countB3Total = 0;
-            this.countB4Total = 0;
+            };
 
         });
+//        System.out.println(nomesTrabalhos);
+        System.out.println("etrou");
+//        Double iRestrito = this.countA1Total * 1 + this.countA2Total * 0.85 + this.countA3Total * 0.725 + this.countA4Total * 0.625;
+//        Double iNao_Restrito = this.countB1Total * 0.5 + this.countB2Total * 0.25 + this.countB3Total * 0.1 + this.countB4Total * 0.05;
+//        Double iGeral = iRestrito + iNao_Restrito;
+//            System.out.println("teste: "+iRestrito);
+        this.iRestritoTotal = this.countA1Total * 1 + this.countA2Total * 0.85 + this.countA3Total * 0.725 + this.countA4Total * 0.625;
+        this.iNaoRestritoTotal = this.countB1Total * 0.5 + this.countB2Total * 0.25 + this.countB3Total * 0.1 + this.countB4Total * 0.05;
+        this.iGeralTotal = iRestritoTotal + iNaoRestritoTotal;
+//        System.out.println(this.countA1Total);
+
         System.out.println(periodicos);
 
         list.put("iRestrito_DCC", String.format("%.2f", (iRestritoTotal/TotalDiscenteDoutorado)));
-//        list.put("iNao_Restrito_PPGCC", String.format("%.2f", iNao_Restrito));
+        list.put("iNao_Restrito_DCC", String.format("%.2f", iNaoRestritoTotal/TotalDiscenteDoutorado));
         list.put("iGeral_DCC", String.format("%.2f", iGeralTotal/TotalDiscenteDoutorado));
         listHash.add(list);
 
+        this.countA1Total = 0;
+        this.countA2Total = 0;
+        this.countA3Total = 0;
+        this.countA4Total = 0;
+        this.countB1Total = 0;
+        this.countB2Total = 0;
+        this.countB3Total = 0;
+        this.countB4Total = 0;
         this.iRestritoTotal = 0.0;
         this.iGeralTotal = 0.0;
+        this.TotalDiscenteDoutorado = 0;
         return listHash;
 
+    }
+
+    public HashMap<String,String> AuxIndiceDCCMAPI(List<Object[]> result){
+        System.out.println(result);
+        HashMap<String,String> resultado = new HashMap<String,String>();
+        for(Object[] borderTypes: result){
+            resultado.put((String)borderTypes[0], (String)borderTypes[1]);
+        }
+        return resultado;
     }
 }
