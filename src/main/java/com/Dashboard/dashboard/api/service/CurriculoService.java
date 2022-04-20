@@ -196,20 +196,18 @@ public class CurriculoService {
         List<String> periodicos= new ArrayList<>();
         List<String> nomesTrabalhos = new ArrayList<>();
         List<Long> curriculos = this.repo.findAllIdDoutorado();
-
+//
         HashMap<String, String> list = new HashMap<>();
         curriculos.stream().forEach(idCurriculo -> {
             this.TotalDiscenteDoutorado++;
             HashMap<String,String> periodicosCurriculo = this.AuxIndiceDCCMAPI(this.qualisRepo.periodicosCurriculo(idCurriculo,ano_inicio,ano_final));
-            System.out.println(periodicosCurriculo);
             for(Map.Entry<String, String> entry : periodicosCurriculo.entrySet()){
                 String key = entry.getKey();
                 String value = entry.getValue();
-
                 if(!nomesTrabalhos.contains(key)){
                     periodicos.add(value);
                     nomesTrabalhos.add(key);
-                    if(this.qualisRepo.estratoPeriodico(value).equalsIgnoreCase("A1")){
+                    if(this.qualisRepo.estratoPeriodico(value).equalsIgnoreCase("A1")) {
                         this.countA1Total++;
                     }else if(this.qualisRepo.estratoPeriodico(value).equalsIgnoreCase("A2")){
                         this.countA2Total++;
@@ -228,20 +226,11 @@ public class CurriculoService {
                     }
                 }
             };
-
+//
         });
-//        System.out.println(nomesTrabalhos);
-        System.out.println("etrou");
-//        Double iRestrito = this.countA1Total * 1 + this.countA2Total * 0.85 + this.countA3Total * 0.725 + this.countA4Total * 0.625;
-//        Double iNao_Restrito = this.countB1Total * 0.5 + this.countB2Total * 0.25 + this.countB3Total * 0.1 + this.countB4Total * 0.05;
-//        Double iGeral = iRestrito + iNao_Restrito;
-//            System.out.println("teste: "+iRestrito);
         this.iRestritoTotal = this.countA1Total * 1 + this.countA2Total * 0.85 + this.countA3Total * 0.725 + this.countA4Total * 0.625;
         this.iNaoRestritoTotal = this.countB1Total * 0.5 + this.countB2Total * 0.25 + this.countB3Total * 0.1 + this.countB4Total * 0.05;
         this.iGeralTotal = iRestritoTotal + iNaoRestritoTotal;
-//        System.out.println(this.countA1Total);
-
-        System.out.println(periodicos);
 
         list.put("iRestrito_DCC", String.format("%.2f", (iRestritoTotal/TotalDiscenteDoutorado)));
         list.put("iNao_Restrito_DCC", String.format("%.2f", iNaoRestritoTotal/TotalDiscenteDoutorado));
@@ -264,7 +253,7 @@ public class CurriculoService {
     }
 
     public HashMap<String,String> AuxIndiceDCCMAPI(List<Object[]> result){
-        System.out.println(result);
+//        System.out.println(result);
         HashMap<String,String> resultado = new HashMap<String,String>();
         for(Object[] borderTypes: result){
             resultado.put((String)borderTypes[0], (String)borderTypes[1]);

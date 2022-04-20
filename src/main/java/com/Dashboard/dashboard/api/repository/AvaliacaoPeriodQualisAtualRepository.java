@@ -17,7 +17,7 @@ public interface AvaliacaoPeriodQualisAtualRepository extends JpaRepository<Aval
     List<String> estratosCurriculo(@Param("fkCurriculo") Long fkCurriculo,@Param("ano_inicio")Integer ano_inicio
             ,@Param("ano_final")Integer ano_final);
 
-    @Query(value="select pe.titulo,pe.titulo_periodico from teste.periodicos pe " +
+    @Query(value="select distinct pe.titulo,pe.titulo_periodico from teste.periodicos pe " +
             "inner join teste.periodicos_autores pea " +
             "on pe.id = pea.fk_periodicos " +
             "inner join teste.avaliacao_period_qualis_atual awq on upper(pe.titulo_periodico) "+
@@ -27,7 +27,7 @@ public interface AvaliacaoPeriodQualisAtualRepository extends JpaRepository<Aval
     List<Object[]> periodicosCurriculo(@Param("fkCurriculo") Long fkCurriculo, @Param("ano_inicio")Integer ano_inicio
             , @Param("ano_final")Integer ano_final);
 
-    @Query(value = "select awq.estrato from teste.avaliacao_period_qualis_atual awq" +
+    @Query(value = "select distinct awq.estrato from teste.avaliacao_period_qualis_atual awq" +
             " where upper(:nomePeriod) like upper(awq.periodico)", nativeQuery = true)
     String estratoPeriodico(@Param("nomePeriod") String nomePeriod);
 

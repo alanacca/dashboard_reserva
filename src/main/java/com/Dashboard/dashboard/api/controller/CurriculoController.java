@@ -48,7 +48,7 @@ public class CurriculoController {
     }
 
     @GetMapping("estrato_DCC/{ano_inicio}/{ano_final}")
-    public ResponseEntity<List<HashMap<String,String>>> findIndiceDCC(@PathVariable("ano_inicio") Integer ano_inicio,
+    public ResponseEntity<List<HashMap<String, String>>> findIndiceDCC(@PathVariable("ano_inicio") Integer ano_inicio,
                                                                         @PathVariable("ano_final") Integer ano_final){
         List<HashMap<String,String>> estratosCurriculo = this.service.indicesDCCMAPI(ano_inicio,ano_final);
         return new ResponseEntity<>(estratosCurriculo,HttpStatus.OK);
