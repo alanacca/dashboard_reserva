@@ -191,6 +191,56 @@ public class CurriculoService {
         return listHash;
     }
 
+    public List<HashMap<String,String>> estratoCurriculoDoutorado2Forma(Integer ano_inicio,Integer ano_final){
+
+        List<HashMap<String,String>> listHash = new ArrayList<>();
+        List<Long> curriculos = this.repo.findAllIdDoutorado();
+        curriculos.stream().forEach(idCurriculo-> {
+            HashMap<String,String> list = new HashMap<>();
+            List < String > estratosCurriculo = this.qualisRepo.estratosCurriculo(idCurriculo,ano_inicio, ano_final);
+            estratosCurriculo.stream().forEach(estrato -> {
+                if (estrato.equalsIgnoreCase("A1")) {
+                    this.countA1++;
+                } else if (estrato.equalsIgnoreCase("A2")) {
+                    this.countA2++;
+                } else if (estrato.equalsIgnoreCase("A3")) {
+                    this.countA3++;
+                }else if (estrato.equalsIgnoreCase("A4")) {
+                    this.countA4++;
+                }else if (estrato.equalsIgnoreCase("B1")) {
+                    this.countB1++;
+                }else if (estrato.equalsIgnoreCase("B2")) {
+                    this.countB2++;
+                }else if (estrato.equalsIgnoreCase("B3")) {
+                    this.countB3++;
+                }else if (estrato.equalsIgnoreCase("B4")) {
+                    this.countB4++;
+                }
+            });
+//            System.out.println(this.countA1);
+            Double iRestrito =  this.countA1 * 1 + this.countA2 * 0.85 + this.countA3 * 0.725 + this.countA4 * 0.625;
+            Double iNao_Restrito = this.countB1 * 0.5 + this.countB2 * 0.25 + this.countB3 * 0.1 + this.countB4 * 0.05;
+            Double iGeral = iRestrito + iNao_Restrito;
+            String nomeCompleto = this.repo.findNomeCompleto(idCurriculo);
+
+            list.put("nomeCompleto", nomeCompleto);
+            list.put("iRestrito", String.format("%.2f",iRestrito));
+            list.put("iNao_Restrito", String.format("%.2f",iNao_Restrito));
+            list.put("iGeral", String.format("%.2f",iGeral));
+            listHash.add(list);
+
+            this.countA1 = 0;
+            this.countA2 = 0;
+            this.countA3 = 0;
+            this.countA4 = 0;
+            this.countB1 = 0;
+            this.countB2 = 0;
+            this.countB3 = 0;
+            this.countB4 = 0;
+        });
+        return listHash;
+    }
+
     public List<HashMap<String, String>> indicesDCCMAPI(Integer ano_inicio, Integer ano_final) {
         List<HashMap<String,String>> listHash = new ArrayList<>();
         List<String> periodicos= new ArrayList<>();
