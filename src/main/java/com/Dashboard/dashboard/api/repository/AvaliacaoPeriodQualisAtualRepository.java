@@ -38,15 +38,26 @@ public interface AvaliacaoPeriodQualisAtualRepository extends JpaRepository<Aval
             " where upper(:nomePeriod) like upper(awq.periodico)", nativeQuery = true)
     String estratoPeriodico(@Param("nomePeriod") String nomePeriod);
 
-    @Query(value = "select count(*) from teste.pessoas pe\n" +
-            "inner join teste.plataforma_pessoa plat\n" +
-            "on id_pessoa = fk_pessoa\n" +
-            "inner join teste.curriculos cur\n" +
-            "on CAST(plat.id_plataforma as bigint) = cur.id\n" +
-            "inner join teste.periodicos_autores pea\n" +
-            "on pea.fk_curriculo = cur.id\n" +
-            "and fk_periodicos = :num_periodico\n" +
+    @Query(value = "select count(*) from teste.pessoas pe " +
+            "inner join teste.plataforma_pessoa plat " +
+            "on id_pessoa = fk_pessoa " +
+            "inner join teste.curriculos cur " +
+            "on CAST(plat.id_plataforma as bigint) = cur.id " +
+            "inner join teste.periodicos_autores pea " +
+            "on pea.fk_curriculo = cur.id " +
+            "and fk_periodicos = :numPeriod " +
+            "and pe.doutorado = true", nativeQuery = true)
+    Double countAutoresPeriodicoDoutorado(@Param("numPeriod") Integer numPeriod);
+
+    @Query(value = "select count(*) from teste.pessoas pe " +
+            "inner join teste.plataforma_pessoa plat " +
+            "on id_pessoa = fk_pessoa " +
+            "inner join teste.curriculos cur " +
+            "on CAST(plat.id_plataforma as bigint) = cur.id " +
+            "inner join teste.periodicos_autores pea " +
+            "on pea.fk_curriculo = cur.id " +
+            "and fk_periodicos = :numPeriod " +
             "and pe.mestrado = true", nativeQuery = true)
-    Integer countAutoresPeriodico(@Param("num_period") Integer num_period);
+    Double countAutoresPeriodicoMestrado(@Param("numPeriod") Integer numPeriod);
 
 }

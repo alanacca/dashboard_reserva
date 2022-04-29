@@ -33,6 +33,13 @@ public class CurriculoController {
         return new ResponseEntity<>(estratosCurriculo,HttpStatus.OK);
     }
 
+    @GetMapping("estratoMestrado2Forma/{ano_inicio}/{ano_final}")
+    public ResponseEntity<List<HashMap<String, String>>> findEstratosCurriculoMestrado2Forma(@PathVariable("ano_inicio") Integer ano_inicio,
+                                                                                              @PathVariable("ano_final") Integer ano_final){
+        List<HashMap<String,String>> estratosCurriculo = this.service.estratoCurriculoMestrado2Forma(ano_inicio,ano_final);
+        return new ResponseEntity<>(estratosCurriculo,HttpStatus.OK);
+    }
+
     @GetMapping("estrato_PPGCC/{ano_inicio}/{ano_final}")
     public ResponseEntity<List<HashMap<String,String>>> findIndicePPGCC(@PathVariable("ano_inicio") Integer ano_inicio,
                                                                               @PathVariable("ano_final") Integer ano_final){
@@ -44,6 +51,13 @@ public class CurriculoController {
     public ResponseEntity<List<HashMap<String,String>>> findEstratosCurriculoDoutorado(@PathVariable("ano_inicio") Integer ano_inicio,
                                                                               @PathVariable("ano_final") Integer ano_final){
         List<HashMap<String,String>> estratosCurriculo = this.service.estratoCurriculoDoutorado(ano_inicio,ano_final);
+        return new ResponseEntity<>(estratosCurriculo,HttpStatus.OK);
+    }
+
+    @GetMapping("estratoDoutorado2Forma/{ano_inicio}/{ano_final}")
+    public ResponseEntity<List<HashMap<String, String>>> findEstratosCurriculoDoutorado2Forma(@PathVariable("ano_inicio") Integer ano_inicio,
+                                                                       @PathVariable("ano_final") Integer ano_final){
+        List<HashMap<String,String>> estratosCurriculo = this.service.estratoCurriculoDoutorado2Forma(ano_inicio,ano_final);
         return new ResponseEntity<>(estratosCurriculo,HttpStatus.OK);
     }
 
