@@ -17,11 +17,20 @@ public interface AvaliacaoPeriodQualisAtualRepository extends JpaRepository<Aval
     List<String> estratosCurriculo(@Param("fkCurriculo") Long fkCurriculo,@Param("ano_inicio")Integer ano_inicio
             ,@Param("ano_final")Integer ano_final);
 
-    @Query(value = "select awq.estrato,fk_periodicos from teste.periodicos pe inner join teste.periodicos_autores pea on pe.id = pea.fk_periodicos inner join teste.avaliacao_period_qualis_atual awq on upper(pe.titulo_periodico) " +
+    @Query(value = "select fk_periodicos,awq.estrato from teste.periodicos pe inner join teste.periodicos_autores pea on pe.id = pea.fk_periodicos inner join teste.avaliacao_period_qualis_atual awq on upper(pe.titulo_periodico) " +
             "like upper(awq.periodico) and pea.fk_curriculo = :fkCurriculo" +
             " and pe.ano_trabalho >= :ano_inicio and pe.ano_trabalho <= :ano_final" ,
             nativeQuery = true)
     List<Object[]> estratosCurriculo2Forma(@Param("fkCurriculo") Long fkCurriculo,@Param("ano_inicio")Integer ano_inicio
+            ,@Param("ano_final")Integer ano_final);
+
+    @Query(value = "select fk_artigo_evento,awq.estrato from teste.artigo_eventos pe "+
+            "inner join teste.artigo_evento_autores pea on pe.id = pea.fk_artigo_evento "+
+            "inner join teste.avaliacao_period_qualis_atual awq on upper(pe.titulo_anais_ou_proceedings) "+
+            "like upper(awq.periodico) and pea.fk_curriculo = :fkCurriculo "+
+            "and pe.ano_trabalho >= :ano_inicio and pe.ano_trabalho <= :ano_final",
+            nativeQuery = true)
+    List<Object[]> estratosCurriculoEventos2Forma(@Param("fkCurriculo") Long fkCurriculo,@Param("ano_inicio")Integer ano_inicio
             ,@Param("ano_final")Integer ano_final);
 
     @Query(value="select distinct pe.titulo,pe.titulo_periodico from teste.periodicos pe " +
@@ -59,5 +68,17 @@ public interface AvaliacaoPeriodQualisAtualRepository extends JpaRepository<Aval
             "and fk_periodicos = :numPeriod " +
             "and pe.mestrado = true", nativeQuery = true)
     Double countAutoresPeriodicoMestrado(@Param("numPeriod") Integer numPeriod);
+
+    @Query(value = "select count(*) from teste.pessoas pe " +
+            "inner join teste.plataforma_pessoa plat " +
+            "on id_pessoa = fk_pessoa " +
+            "inner join teste.curriculos cur " +
+            "on CAST(plat.id_plataforma as bigint) = cur.id " +
+            "inner join teste.artigo_evento_autores aea " +
+            "on aea.fk_curriculo = cur.id " +
+            "and fk_artigo_evento = :numPeriod " +
+            "and pe.mestrado = true", nativeQuery = true)
+    Double countAutoresEventoMestrado(@Param("numPeriod") Integer numPeriod);
+
 
 }

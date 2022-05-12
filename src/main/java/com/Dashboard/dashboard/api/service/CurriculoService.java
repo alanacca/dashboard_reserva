@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+
 @Service
 public class CurriculoService {
 
@@ -225,27 +226,37 @@ public class CurriculoService {
 //        curriculos.stream().forEach(idCurriculo-> {
 //            System.out.println(idCurriculo);
             HashMap<String,String> list = new HashMap<>();
-            HashMap<String,Integer> estratoPeriodicos = this.AuxIndice2Forma(this.qualisRepo.estratosCurriculo2Forma(idCurriculo,ano_inicio,ano_final));
-            for(Map.Entry<String, Integer> entry : estratoPeriodicos.entrySet()) {
-                String key = entry.getKey();
-                Integer value = entry.getValue();
+            HashMap<Integer,String> estratoPeriodicos =
+                    this.AuxIndice2Forma(this.qualisRepo.estratosCurriculo2Forma(idCurriculo,ano_inicio,ano_final),
+                    this.qualisRepo.estratosCurriculoEventos2Forma(idCurriculo,ano_inicio,ano_final));
+            for(Map.Entry<Integer, String> entry : estratoPeriodicos.entrySet()) {
+                Integer key = entry.getKey();
+                String value = entry.getValue();
 //                System.out.println(this.qualisRepo.countAutoresPeriodicoMestrado(value));
-                Double quantidadeAutores = 1.0/this.qualisRepo.countAutoresPeriodicoMestrado(value);
-                if (key.equalsIgnoreCase("A1")) {
+                Double quantidadeAutores = 0.0;
+                if(!Double.isInfinite(1/this.qualisRepo.countAutoresPeriodicoMestrado(key))){
+                    quantidadeAutores = 1.0/this.qualisRepo.countAutoresPeriodicoMestrado(key);
+                }else if(!Double.isInfinite(1/this.qualisRepo.countAutoresEventoMestrado(key))){
+                    quantidadeAutores = 1.0/this.qualisRepo.countAutoresEventoMestrado(key);
+                }
+//                Double quantidadeAutores = 1.0/this.qualisRepo.countAutoresPeriodicoMestrado(value);
+                System.out.println("quantidade autores");
+                System.out.println(quantidadeAutores);
+                if (value.equalsIgnoreCase("A1")) {
                     this.countA12Forma += quantidadeAutores;
-                } else if (key.equalsIgnoreCase("A2")) {
+                } else if (value.equalsIgnoreCase("A2")) {
                     this.countA22Forma += quantidadeAutores;
-                } else if (key.equalsIgnoreCase("A3")) {
+                } else if (value.equalsIgnoreCase("A3")) {
                     this.countA32Forma += quantidadeAutores;
-                } else if (key.equalsIgnoreCase("A4")) {
+                } else if (value.equalsIgnoreCase("A4")) {
                     this.countA42Forma += quantidadeAutores;
-                } else if (key.equalsIgnoreCase("B1")) {
+                } else if (value.equalsIgnoreCase("B1")) {
                     this.countB12Forma += quantidadeAutores;
-                } else if (key.equalsIgnoreCase("B2")) {
+                } else if (value.equalsIgnoreCase("B2")) {
                     this.countB22Forma += quantidadeAutores;
-                } else if (key.equalsIgnoreCase("B3")) {
+                } else if (value.equalsIgnoreCase("B3")) {
                     this.countB32Forma += quantidadeAutores;
-                } else if (key.equalsIgnoreCase("B4")) {
+                } else if (value.equalsIgnoreCase("B4")) {
                     this.countB42Forma += quantidadeAutores;
                 }
             }
@@ -494,27 +505,27 @@ public class CurriculoService {
 //        curriculos.stream().forEach(idCurriculo-> {
 //            System.out.println(idCurriculo);
             HashMap<String,String> list = new HashMap<>();
-            HashMap<String,Integer> estratoPeriodicos = this.AuxIndice2Forma(this.qualisRepo.estratosCurriculo2Forma(idCurriculo,ano_inicio,ano_final));
-            for(Map.Entry<String, Integer> entry : estratoPeriodicos.entrySet()) {
-                String key = entry.getKey();
-                Integer value = entry.getValue();
+            HashMap<Integer,String> estratoPeriodicos = this.AuxIndice2Forma(this.qualisRepo.estratosCurriculo2Forma(idCurriculo,ano_inicio,ano_final), this.qualisRepo.estratosCurriculoEventos2Forma(idCurriculo,ano_inicio,ano_final));
+            for(Map.Entry<Integer, String> entry : estratoPeriodicos.entrySet()) {
+                Integer key = entry.getKey();
+                String value = entry.getValue();
 //                System.out.println(this.qualisRepo.countAutoresPeriodicoDoutorado(value));
-                Double quantidadeAutores = 1.0/this.qualisRepo.countAutoresPeriodicoDoutorado(value);
-                if (key.equalsIgnoreCase("A1")) {
+                Double quantidadeAutores = 1.0/this.qualisRepo.countAutoresPeriodicoDoutorado(key);
+                if (value.equalsIgnoreCase("A1")) {
                     this.countA12Forma += quantidadeAutores;
-                } else if (key.equalsIgnoreCase("A2")) {
+                } else if (value.equalsIgnoreCase("A2")) {
                     this.countA22Forma += quantidadeAutores;
-                } else if (key.equalsIgnoreCase("A3")) {
+                } else if (value.equalsIgnoreCase("A3")) {
                     this.countA32Forma += quantidadeAutores;
-                } else if (key.equalsIgnoreCase("A4")) {
+                } else if (value.equalsIgnoreCase("A4")) {
                     this.countA42Forma += quantidadeAutores;
-                } else if (key.equalsIgnoreCase("B1")) {
+                } else if (value.equalsIgnoreCase("B1")) {
                     this.countB12Forma += quantidadeAutores;
-                } else if (key.equalsIgnoreCase("B2")) {
+                } else if (value.equalsIgnoreCase("B2")) {
                     this.countB22Forma += quantidadeAutores;
-                } else if (key.equalsIgnoreCase("B3")) {
+                } else if (value.equalsIgnoreCase("B3")) {
                     this.countB32Forma += quantidadeAutores;
-                } else if (key.equalsIgnoreCase("B4")) {
+                } else if (value.equalsIgnoreCase("B4")) {
                     this.countB42Forma += quantidadeAutores;
                 }
             }
@@ -602,11 +613,14 @@ public class CurriculoService {
 
     }
 
-    public HashMap<String,Integer> AuxIndice2Forma(List<Object[]> result){
+    public HashMap<Integer,String> AuxIndice2Forma(List<Object[]> result,List<Object[]> result2){
 //        System.out.println(result);
-        HashMap<String,Integer> resultado = new HashMap<String,Integer>();
+        HashMap<Integer,String> resultado = new HashMap<Integer,String>();
         for(Object[] borderTypes: result){
-            resultado.put((String)borderTypes[0], (Integer)borderTypes[1]);
+            resultado.put((Integer)borderTypes[0], (String)borderTypes[1]);
+        }
+        for(Object[] borderTypes: result2){
+            resultado.put((Integer)borderTypes[0], (String)borderTypes[1]);
         }
         return resultado;
     }
