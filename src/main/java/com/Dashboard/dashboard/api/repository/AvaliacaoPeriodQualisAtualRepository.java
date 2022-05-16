@@ -17,18 +17,25 @@ public interface AvaliacaoPeriodQualisAtualRepository extends JpaRepository<Aval
     List<String> estratosCurriculo(@Param("fkCurriculo") Long fkCurriculo,@Param("ano_inicio")Integer ano_inicio
             ,@Param("ano_final")Integer ano_final);
 
-    @Query(value = "select fk_periodicos,awq.estrato from teste.periodicos pe inner join teste.periodicos_autores pea on pe.id = pea.fk_periodicos inner join teste.avaliacao_period_qualis_atual awq on upper(pe.titulo_periodico) " +
-            "like upper(awq.periodico) and pea.fk_curriculo = :fkCurriculo" +
+    @Query(value = "select pea.fk_periodicos,awq.estrato from teste.periodicos pe " +
+            "inner join teste.periodicos_autores pea on pe.id = pea.fk_periodicos " +
+            "inner join teste.avaliacao_period_qualis_atual awq " +
+            "on upper(pe.titulo_periodico) like upper(awq.periodico) " +
+            "and pea.fk_curriculo = :fkCurriculo" +
             " and pe.ano_trabalho >= :ano_inicio and pe.ano_trabalho <= :ano_final" ,
             nativeQuery = true)
     List<Object[]> estratosCurriculo2Forma(@Param("fkCurriculo") Long fkCurriculo,@Param("ano_inicio")Integer ano_inicio
             ,@Param("ano_final")Integer ano_final);
 
-    @Query(value = "select fk_artigo_evento,awq.estrato from teste.artigo_eventos pe "+
-            "inner join teste.artigo_evento_autores pea on pe.id = pea.fk_artigo_evento "+
-            "inner join teste.avaliacao_period_qualis_atual awq on upper(pe.titulo_anais_ou_proceedings) "+
-            "like upper(awq.periodico) and pea.fk_curriculo = :fkCurriculo "+
-            "and pe.ano_trabalho >= :ano_inicio and pe.ano_trabalho <= :ano_final",
+    @Query(value = "select aea.fk_artigo_evento, ac.estrato from teste.artigo_eventos ae " +
+            "inner join teste.artigo_evento_autores aea " +
+            "on aea.fk_artigo_evento = ae.id " +
+            "inner join teste.avaliacoes_de_congressos ac " +
+            "on ae.nome_evento != ac.nome_evento " +
+            "and similarity(ae.nome_evento,ac.nome_evento) > .8 " +
+            "and aea.fk_curriculo = :fkCurriculo " +
+            "and ae.ano_trabalho >= :ano_inicio " +
+            "and ae.ano_trabalho <= :ano_final",
             nativeQuery = true)
     List<Object[]> estratosCurriculoEventos2Forma(@Param("fkCurriculo") Long fkCurriculo,@Param("ano_inicio")Integer ano_inicio
             ,@Param("ano_final")Integer ano_final);
