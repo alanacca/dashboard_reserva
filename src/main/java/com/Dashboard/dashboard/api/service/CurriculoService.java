@@ -240,8 +240,8 @@ public class CurriculoService {
                     quantidadeAutores = 1.0/this.qualisRepo.countAutoresEventoMestrado(key);
                 }
 //                Double quantidadeAutores = 1.0/this.qualisRepo.countAutoresPeriodicoMestrado(value);
-                System.out.println("quantidade autores");
-                System.out.println(quantidadeAutores);
+//                System.out.println("quantidade autores");
+//                System.out.println(quantidadeAutores);
                 if (value.equalsIgnoreCase("A1")) {
                     this.countA12Forma += quantidadeAutores;
                 } else if (value.equalsIgnoreCase("A2")) {
