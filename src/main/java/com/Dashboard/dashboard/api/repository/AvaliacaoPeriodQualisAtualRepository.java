@@ -2,6 +2,7 @@ package com.Dashboard.dashboard.api.repository;
 
 import com.Dashboard.dashboard.api.model.AvaliacaoPeriodQualisAtual;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -10,19 +11,37 @@ import java.util.List;
 
 public interface AvaliacaoPeriodQualisAtualRepository extends JpaRepository<AvaliacaoPeriodQualisAtual,Integer> {
 
-    @Query(value = "select awq.estrato from teste.periodicos pe inner join teste.periodicos_autores pea on pe.id = pea.fk_periodicos inner join teste.avaliacao_period_qualis_atual awq on upper(pe.titulo_periodico) " +
-            "like upper(awq.periodico) and pea.fk_curriculo = :fkCurriculo" +
-            " and pe.ano_trabalho >= :ano_inicio and pe.ano_trabalho <= :ano_final" ,
+
+    @Query(value = "select awq.estrato from teste.periodicos pe " +
+            "inner join teste.periodicos_autores pea on pe.id = pea.fk_periodicos " +
+            "inner join teste.avaliacao_period_qualis_atual awq " +
+            "on (pe.titulo_periodico != awq.periodico or pe.titulo_periodico = awq.periodico) "+
+            "and teste.similarity(awq.periodico,pe.titulo_periodico) >= .8 "+
+            "and pea.fk_curriculo = :fkCurriculo " +
+            "and pe.ano_trabalho >= :ano_inicio and pe.ano_trabalho <= :ano_final" ,
     nativeQuery = true)
-    List<String> estratosCurriculo(@Param("fkCurriculo") Long fkCurriculo,@Param("ano_inicio")Integer ano_inicio
+    List<String> estratosCurriculoPeriodicos(@Param("fkCurriculo") Long fkCurriculo,@Param("ano_inicio")Integer ano_inicio
+            ,@Param("ano_final")Integer ano_final);
+
+    @Query(value = "select ac.estrato from teste.artigo_eventos ae " +
+            "inner join teste.artigo_evento_autores aea " +
+            "on aea.fk_artigo_evento = ae.id " +
+            "inner join teste.avaliacoes_de_congressos ac " +
+            "on ae.nome_evento != ac.nome_evento " +
+            "and teste.similarity(ae.nome_evento,ac.nome_evento) >= .8 " +
+            "and aea.fk_curriculo = :fkCurriculo " +
+            "and ae.ano_trabalho >= :ano_inicio " +
+            "and ae.ano_trabalho <= :ano_final" ,
+          nativeQuery = true)
+    List<String> estratosCurriculoEventos(@Param("fkCurriculo") Long fkCurriculo,@Param("ano_inicio")Integer ano_inicio
             ,@Param("ano_final")Integer ano_final);
 
     @Query(value = "select pea.fk_periodicos,awq.estrato from teste.periodicos pe " +
             "inner join teste.periodicos_autores pea on pe.id = pea.fk_periodicos " +
             "inner join teste.avaliacao_period_qualis_atual awq " +
             "on upper(pe.titulo_periodico) like upper(awq.periodico) " +
-            "and pea.fk_curriculo = :fkCurriculo" +
-            " and pe.ano_trabalho >= :ano_inicio and pe.ano_trabalho <= :ano_final" ,
+            "and pea.fk_curriculo = :fkCurriculo " +
+            "and pe.ano_trabalho >= :ano_inicio and pe.ano_trabalho <= :ano_final" ,
             nativeQuery = true)
     List<Object[]> estratosCurriculo2Forma(@Param("fkCurriculo") Long fkCurriculo,@Param("ano_inicio")Integer ano_inicio
             ,@Param("ano_final")Integer ano_final);
