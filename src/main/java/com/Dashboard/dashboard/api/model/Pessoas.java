@@ -1,6 +1,7 @@
 package com.Dashboard.dashboard.api.model;
 
 import com.Dashboard.dashboard.api.request.PessoasRequest;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -18,11 +19,11 @@ public class Pessoas {
     @Column(name="nome_completo")
     private String nomeCompleto;
 
-    @Column(name="id_plataforma")
-    private String idPlataforma;
+    @Column(name="mestrado")
+    private Boolean mestrado;
 
-    @Column(name="plataforma")
-    private String Platraforma;
+    @Column(name="doutorado")
+    private Boolean doutorado;
 
     public Pessoas(){
 
@@ -34,8 +35,15 @@ public class Pessoas {
 
     public Pessoas(PessoasRequest request){
         this.nomeCompleto = request.Nome_Completo;
-        this.idPlataforma = request.idPlataforma;
-        this.Platraforma = request.Plataforma;
+        this.mestrado = request.mestrado;
+        this.doutorado = request.doutorado;
+    }
+
+    public Pessoas(Pessoas pessoa){
+
+        this.nomeCompleto = pessoa.nomeCompleto;
+        this.mestrado = pessoa.mestrado;
+        this.doutorado = pessoa.doutorado;
     }
 }
 
